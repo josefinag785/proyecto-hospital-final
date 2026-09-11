@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HOSPITAL DE CLINICA</title>
+
+    <!-- Normalize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="/prueba/css/style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="encabezado">
+
+         <img src="/prueba/img/LOGO PROYECTO DHC.png"
+             alt="Logo"
+             class="logo">
+
+        <h1>HOSPITAL DE CLINICA</h1>
+
+    </div>
+
+</header>
+
+
+<div class="perfil-contenedor">
+
+    <!-- MENÚ LATERAL -->
+
+    <aside class="menu-lateral">
+
+        <h3>Menú</h3>
+
+
+        <!-- INICIO -->
+
+        <a href="panelprincipal.html">
+
+            <i class="fa-solid fa-house"></i>
+
+            Inicio
+
+        </a>
+
+
+        <!-- PACIENTES -->
+
+        <details class="menu-desplegable">
+
+            <summary>
+
+                <i class="fa-solid fa-user-plus"></i>
+
+                Pacientes
+
+            </summary>
+
+            <div class="submenu">
+
+                <a href="nuevo_paciente.php">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Nuevo paciente
+
+                </a>
+
+                <a href="ver_paciente.php">
+
+                    <i class="fa-solid fa-list"></i>
+
+                    Ver pacientes
+
+                </a>
+
+            </div>
+
+        </details>
+
+
+        <!-- AMBULANCIAS -->
+
+        <details class="menu-desplegable">
+
+            <summary>
+
+                <i class="fa-solid fa-truck-medical"></i>
+
+                Ambulancias
+
+            </summary>
+
+            <div class="submenu">
+
+                <a href="transporte.html">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Nuevo registro
+
+                </a>
+
+                <a href="registro_ambulancias.html">
+
+                    <i class="fa-solid fa-list"></i>
+
+                    Ver registros
+
+                </a>
+
+            </div>
+
+        </details>
+
+
+        <!-- USUARIOS -->
+
+       <details class="menu-desplegable">
+
+            <summary>
+
+                <i class="fa-solid fa-user-plus"></i>
+
+                Usuarios
+
+            </summary>
+
+            <div class="submenu">
+
+                <a href="panel_admin.php">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                   Solicitudes
+
+                </a>
+
+                <a href="lista_usuarios.php">
+
+                    <i class="fa-solid fa-list"></i>
+
+                    Lista de Usuarios
+
+                </a>
+
+            </div>
+
+        </details>
+
+
+        <!-- CERRAR SESIÓN -->
+
+        <a href="index.html">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Cerrar sesión
+
+        </a>
+
+    </aside>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+
+    <main class="contenido">
+
+        <h2 class="titulo-panel">
+
+            Panel Principal
+
+        </h2>
+
+        <p class="subtitulo-panel">
+
+            Resumen del estado actual del Hospital de Clínicas.
+
+        </p>
+
+
+        <!-- RESUMEN GENERAL -->
+
+        <div class="resumen">
+
+
+            <div class="resumen-card">
+
+                <i class="fa-solid fa-user-group"></i>
+
+                <div>
+
+                    <h3>Pacientes</h3>
+
+                    <p>Gestión de pacientes registrados</p>
+
+                </div>
+
+            </div>
+
+
+            <div class="resumen-card">
+
+                <i class="fa-solid fa-truck-medical"></i>
+
+                <div>
+
+                    <h3>Ambulancias</h3>
+
+                    <p>Gestión de transporte</p>
+
+                </div>
+
+            </div>
+
+
+            <div class="resumen-card">
+
+                <i class="fa-solid fa-user"></i>
+
+                <div>
+
+                    <h3>Usuarios</h3>
+
+                    <p>Gestión de usuarios del sistema</p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ACCESOS PRINCIPALES -->
+
+        <div class="panel-fila">
+
+
+            <section class="panel-contenedor">
+
+                <div class="panel-titulo">
+
+                    <i class="fa-solid fa-user-group"></i>
+
+                    <h2>Pacientes</h2>
+
+                </div>
+
+                <p>
+
+                    Desde aquí puede registrar nuevos pacientes
+                    y consultar los pacientes existentes.
+
+                </p>
+
+            </section>
+
+
+            <section class="panel-contenedor">
+
+                <div class="panel-titulo">
+
+                    <i class="fa-solid fa-truck-medical"></i>
+
+                    <h2>Ambulancias</h2>
+
+                </div>
+
+                <p>
+
+                    Desde aquí puede acceder a los registros
+                    relacionados con las ambulancias.
+
+                </p>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<footer>
+
+    <p>
+        &copy; 2026 Hospital de Clínicas.
+        Todos los derechos reservados a DHC.
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>
+
