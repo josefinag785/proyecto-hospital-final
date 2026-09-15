@@ -67,27 +67,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="perfil-contenedor">
 
-        <aside class="menu-lateral">
+            <aside class="menu-lateral">
 
-            <h3>Menú</h3>
-
-            <a href="panelprincipal.html">
-                <i class="fa-solid fa-house"></i>
-                Inicio
-            </a>
+        <h3>Menú</h3>
 
 
-            <details class="menu-desplegable" open>
+        <!-- INICIO -->
 
-                <summary>
-                    <i class="fa-solid fa-user-plus"></i>
-                    Pacientes
-                </summary>
+        <a href="/prueba/panelprincipal.html">
 
-<div class="submenu">
+            <i class="fa-solid fa-house"></i>
+
+            Inicio
+
+        </a>
 
 
-                <a href="nuevo_paciente.php">
+        <!-- PACIENTES -->
+
+        <details class="menu-desplegable">
+
+            <summary>
+
+                <i class="fa-solid fa-user-plus"></i>
+
+                Pacientes
+
+            </summary>
+
+            <div class="submenu">
+
+                <a href="/prueba/php/nuevo_paciente.php">
 
                     <i class="fa-solid fa-plus"></i>
 
@@ -95,8 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 </a>
 
-
-                <a href="ver_paciente.php">
+                <a href="/prueba/php/ver_paciente.php">
 
                     <i class="fa-solid fa-list"></i>
 
@@ -104,66 +113,92 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 </a>
 
+            </div>
+
+        </details>
+
+
+        <!-- AMBULANCIAS -->
+
+        <details class="menu-desplegable">
+
+            <summary>
+
+                <i class="fa-solid fa-truck-medical"></i>
+
+                Ambulancias
+
+            </summary>
+
+            <div class="submenu">
+
+                <a href="/prueba/php/nuevo_traslado.php">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Nuevo registro
+
+                </a>
+
+                <a href="/prueba/php/registro_ambulancias.html">
+
+                    <i class="fa-solid fa-list"></i>
+
+                    Ver registros
+
+                </a>
 
             </div>
 
-            </details>
+        </details>
 
 
-            <details class="menu-desplegable">
+        <!-- USUARIOS -->
 
-                <summary>
-                    <i class="fa-solid fa-truck-medical"></i>
-                    Ambulancias
-                </summary>
+       <details class="menu-desplegable">
 
-                <div class="submenu">
+            <summary>
 
-                    <a href="nuevo_traslado.php">
-                        <i class="fa-solid fa-plus"></i>
-                        Nuevo registro
-                    </a>
+                <i class="fa-solid fa-user-plus"></i>
 
-                    <a href="registro_ambulancias.html">
-                        <i class="fa-solid fa-list"></i>
-                        Ver registros
-                    </a>
-
-                </div>
-
-            </details>
-
-
-            <a href="Encuestas.html">
-                <i class="fa-solid fa-file-alt"></i>
-                Encuestas
-            </a>
-
-
-            <a href="consultas.html">
-                <i class="fa-solid fa-stethoscope"></i>
-                Consultas
-            </a>
-
-
-            <a href="#">
-                <i class="fa-solid fa-calendar-check"></i>
-                Turnos
-            </a>
-
-
-            <a href="#">
-                <i class="fa-solid fa-users"></i>
                 Usuarios
-            </a>
+
+            </summary>
+
+            <div class="submenu">
+
+                <a href="/prueba/php/panel_admin.php">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                   Solicitudes
+
+                </a>
+
+                <a href="/prueba/php/lista_usuarios.php">
+
+                    <i class="fa-solid fa-list"></i>
+
+                    Lista de Usuarios
+
+                </a>
+
+            </div>
+
+        </details>
 
 
-            <a href="index.html">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                Cerrar sesión
-            </a>
+        <!-- CERRAR SESIÓN -->
 
-        </aside>
+        <a href="/prueba/index.html">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Cerrar sesión
+
+        </a>
+
+    </aside>
 
 
         <main class="contenido">
@@ -360,4 +395,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 
 </html>
-```
+

@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Comprobar si la cuenta está activa
 if ($usuario["Estado"] == "Activo") {
 
-    header("Location: panelprincipal.html");
+    header("Location: /prueba/panelprincipal.html");
     exit;
 
 } else {
@@ -89,9 +89,9 @@ if ($usuario["Estado"] == "Activo") {
 
         <div class="nav-links">
 
-            <a class="active" href="login.php">Ingresar</a>
+            <a class="active" href="/prueba/php/login.php">Ingresar</a>
 
-            <a href="index.html">Volver Atras</a>
+            <a href="/prueba/index.html">Volver Atras</a>
 
         </div>
 
@@ -161,7 +161,7 @@ if ($usuario["Estado"] == "Activo") {
 
                 <p>
                     ¿No tiene una cuenta?
-                    <a href="registrarse.php">Registrarse</a>
+                    <a href="/prueba/php/registrarse.php">Registrarse</a>
                 </p>
 
             </form>

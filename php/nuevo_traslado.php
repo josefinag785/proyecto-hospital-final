@@ -45,84 +45,135 @@ require_once 'conexion.php';
 
 <div class="perfil-contenedor">
 
-    <aside class="menu-lateral">
+     <aside class="menu-lateral">
 
         <h3>Menú</h3>
 
-        <a href="panelprincipal.html">
+
+        <!-- INICIO -->
+
+        <a href="/prueba/panelprincipal.html">
+
             <i class="fa-solid fa-house"></i>
+
             Inicio
+
         </a>
+
+
+        <!-- PACIENTES -->
 
         <details class="menu-desplegable">
 
             <summary>
+
                 <i class="fa-solid fa-user-plus"></i>
+
                 Pacientes
+
             </summary>
 
             <div class="submenu">
 
-                <a href="nuevo_paciente.php">
+                <a href="/prueba/php/nuevo_paciente.php">
+
                     <i class="fa-solid fa-plus"></i>
+
                     Nuevo paciente
+
                 </a>
 
-                <a href="ver_pacientes.php">
+                <a href="/prueba/php/ver_paciente.php">
+
                     <i class="fa-solid fa-list"></i>
+
                     Ver pacientes
+
                 </a>
 
             </div>
 
         </details>
+
+
+        <!-- AMBULANCIAS -->
 
         <details class="menu-desplegable">
 
             <summary>
+
                 <i class="fa-solid fa-truck-medical"></i>
+
                 Ambulancias
+
             </summary>
 
             <div class="submenu">
 
-                <a href="nuevo_traslado.php">
+                <a href="/prueba/php/nuevo_traslado.php">
+
                     <i class="fa-solid fa-plus"></i>
+
                     Nuevo registro
+
                 </a>
 
-                <a href="registro_ambulancias.html">
+                <a href="/prueba/php/registro_ambulancias.html">
+
                     <i class="fa-solid fa-list"></i>
+
                     Ver registros
+
                 </a>
 
             </div>
 
         </details>
 
-        <a href="Encuestas.html">
-            <i class="fa-solid fa-file-alt"></i>
-            Encuestas
-        </a>
 
-        <a href="consultas.html">
-            <i class="fa-solid fa-stethoscope"></i>
-            Consultas
-        </a>
+        <!-- USUARIOS -->
 
-        <a href="#">
-            <i class="fa-solid fa-calendar-check"></i>
-            Turnos
-        </a>
+       <details class="menu-desplegable">
 
-        <a href="#">
-            <i class="fa-solid fa-users"></i>
-            Usuarios
-        </a>
+            <summary>
 
-        <a href="index.html">
+                <i class="fa-solid fa-user-plus"></i>
+
+                Usuarios
+
+            </summary>
+
+            <div class="submenu">
+
+                <a href="/prueba/php/panel_admin.php">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                   Solicitudes
+
+                </a>
+
+                <a href="/prueba/php/lista_usuarios.php">
+
+                    <i class="fa-solid fa-list"></i>
+
+                    Lista de Usuarios
+
+                </a>
+
+            </div>
+
+        </details>
+
+
+        <!-- CERRAR SESIÓN -->
+
+        <a href="/prueba/index.html">
+
             <i class="fa-solid fa-right-from-bracket"></i>
+
             Cerrar sesión
+
         </a>
 
     </aside>

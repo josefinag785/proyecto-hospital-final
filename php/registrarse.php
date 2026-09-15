@@ -114,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <a class="active" href="registrarse.php">Registrarse</a>
 
-            <a href="index.html">Volver Atras</a>
+            <a href="/prueba/index.html">Volver Atras</a>
 
         </div>
 

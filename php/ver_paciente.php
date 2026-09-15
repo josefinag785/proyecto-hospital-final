@@ -185,7 +185,9 @@ elseif (isset($_POST['mostrar_todos'])) {
         <h3>Menú</h3>
 
 
-        <a href="panelprincipal.html">
+        <!-- INICIO -->
+
+        <a href="/prueba/panelprincipal.html">
 
             <i class="fa-solid fa-house"></i>
 
@@ -196,7 +198,7 @@ elseif (isset($_POST['mostrar_todos'])) {
 
         <!-- PACIENTES -->
 
-        <details class="menu-desplegable" open>
+        <details class="menu-desplegable">
 
             <summary>
 
@@ -206,11 +208,9 @@ elseif (isset($_POST['mostrar_todos'])) {
 
             </summary>
 
-
             <div class="submenu">
 
-
-                <a href="nuevo_paciente.php">
+                <a href="/prueba/php/nuevo_paciente.php">
 
                     <i class="fa-solid fa-plus"></i>
 
@@ -218,15 +218,13 @@ elseif (isset($_POST['mostrar_todos'])) {
 
                 </a>
 
-
-                <a href="ver_paciente.php">
+                <a href="/prueba/php/ver_paciente.php">
 
                     <i class="fa-solid fa-list"></i>
 
                     Ver pacientes
 
                 </a>
-
 
             </div>
 
@@ -245,11 +243,9 @@ elseif (isset($_POST['mostrar_todos'])) {
 
             </summary>
 
-
             <div class="submenu">
 
-
-                <a href="nuevo_traslado.php">
+                <a href="/prueba/php/nuevo_traslado.php">
 
                     <i class="fa-solid fa-plus"></i>
 
@@ -257,8 +253,7 @@ elseif (isset($_POST['mostrar_todos'])) {
 
                 </a>
 
-
-                <a href="registro_ambulancias.html">
+                <a href="/prueba/php/registro_ambulancias.html">
 
                     <i class="fa-solid fa-list"></i>
 
@@ -266,58 +261,49 @@ elseif (isset($_POST['mostrar_todos'])) {
 
                 </a>
 
+            </div>
 
-                <a href="Gestión_Ambulancias.html">
+        </details>
 
-                    <i class="fa-solid fa-cogs"></i>
 
-                    Gestión de Ambulancias
+        <!-- USUARIOS -->
+
+       <details class="menu-desplegable">
+
+            <summary>
+
+                <i class="fa-solid fa-user-plus"></i>
+
+                Usuarios
+
+            </summary>
+
+            <div class="submenu">
+
+                <a href="/prueba/php/panel_admin.php">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                   Solicitudes
 
                 </a>
 
+                <a href="/prueba/php/lista_usuarios.php">
+
+                    <i class="fa-solid fa-list"></i>
+
+                    Lista de Usuarios
+
+                </a>
 
             </div>
 
         </details>
 
 
-        <a href="Encuestas.html">
+        <!-- CERRAR SESIÓN -->
 
-            <i class="fa-solid fa-file-alt"></i>
-
-            Encuestas
-
-        </a>
-
-
-        <a href="consultas.html">
-
-            <i class="fa-solid fa-stethoscope"></i>
-
-            Consultas
-
-        </a>
-
-
-        <a href="#">
-
-            <i class="fa-solid fa-calendar-check"></i>
-
-            Turnos
-
-        </a>
-
-
-        <a href="#">
-
-            <i class="fa-solid fa-users"></i>
-
-            Usuarios
-
-        </a>
-
-
-        <a href="index.html">
+        <a href="/prueba/index.html">
 
             <i class="fa-solid fa-right-from-bracket"></i>
 
@@ -325,9 +311,7 @@ elseif (isset($_POST['mostrar_todos'])) {
 
         </a>
 
-
     </aside>
-
 
     <!-- CONTENIDO -->
 

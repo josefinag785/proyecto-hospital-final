@@ -74,14 +74,14 @@ $resultado = $con->query($sql);
 
     <!-- MENÚ LATERAL -->
 
-        <aside class="menu-lateral">
+    <aside class="menu-lateral">
 
         <h3>Menú</h3>
 
 
         <!-- INICIO -->
 
-        <a href="panelprincipal.html">
+        <a href="/prueba/panelprincipal.html">
 
             <i class="fa-solid fa-house"></i>
 
@@ -104,7 +104,7 @@ $resultado = $con->query($sql);
 
             <div class="submenu">
 
-                <a href="nuevo_paciente.php">
+                <a href="/prueba/php/nuevo_paciente.php">
 
                     <i class="fa-solid fa-plus"></i>
 
@@ -112,7 +112,7 @@ $resultado = $con->query($sql);
 
                 </a>
 
-                <a href="ver_paciente.php">
+                <a href="/prueba/php/ver_paciente.php">
 
                     <i class="fa-solid fa-list"></i>
 
@@ -139,7 +139,7 @@ $resultado = $con->query($sql);
 
             <div class="submenu">
 
-                <a href="transporte.html">
+                <a href="/prueba/php/nuevo_traslado.php">
 
                     <i class="fa-solid fa-plus"></i>
 
@@ -147,7 +147,7 @@ $resultado = $con->query($sql);
 
                 </a>
 
-                <a href="registro_ambulancias.html">
+                <a href="/prueba/php/registro_ambulancias.html">
 
                     <i class="fa-solid fa-list"></i>
 
@@ -160,19 +160,21 @@ $resultado = $con->query($sql);
         </details>
 
 
-        <details class="menu-desplegable">
+        <!-- USUARIOS -->
+
+       <details class="menu-desplegable">
 
             <summary>
 
                 <i class="fa-solid fa-user-plus"></i>
 
-                Usuaruios
+                Usuarios
 
             </summary>
 
             <div class="submenu">
 
-                <a href="panel_admin.php">
+                <a href="/prueba/php/panel_admin.php">
 
                     <i class="fa-solid fa-plus"></i>
 
@@ -180,7 +182,7 @@ $resultado = $con->query($sql);
 
                 </a>
 
-                <a href="lista_usuarios.php">
+                <a href="/prueba/php/lista_usuarios.php">
 
                     <i class="fa-solid fa-list"></i>
 
@@ -192,24 +194,15 @@ $resultado = $con->query($sql);
 
         </details>
 
-        <a href="Encuestas.html">
-            <i class="fa-solid fa-file-alt"></i>
-            Encuestas
-        </a>
 
-        <a href="consultas.html">
-            <i class="fa-solid fa-stethoscope"></i>
-            Consultas
-        </a>
+        <!-- CERRAR SESIÓN -->
 
-        <a href="#">
-            <i class="fa-solid fa-calendar-check"></i>
-            Turnos
-        </a>
+        <a href="/prueba/index.html">
 
-        <a href="index.html">
             <i class="fa-solid fa-right-from-bracket"></i>
+
             Cerrar sesión
+
         </a>
 
     </aside>
