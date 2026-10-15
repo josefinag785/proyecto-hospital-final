@@ -1589,3 +1589,408 @@ table.big-table tbody tr:hover {
     background-color: var(--azul-oscuro);
 }
 
+/* =========================================
+   TRASLADOS SEPARADOS
+========================================= */
+
+.lista-traslados {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+
+/* TARJETA DE CADA TRASLADO */
+
+.tarjeta-traslado {
+    background-color: var(--blanco);
+    border: 1px solid var(--gris);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+
+/* ENCABEZADO DEL TRASLADO */
+
+.encabezado-traslado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-bottom: 18px;
+    margin-bottom: 20px;
+
+    border-bottom: 2px solid var(--gris);
+}
+
+
+.encabezado-traslado strong {
+    font-size: 20px;
+    color: var(--azul-oscuro);
+}
+
+
+.tipo-traslado {
+    margin-left: 12px;
+
+    padding: 5px 10px;
+
+    border-radius: 6px;
+
+    background-color: #EFF6FF;
+    color: var(--azul-principal);
+
+    font-size: 13px;
+}
+
+
+/* INFORMACIÓN DEL TRASLADO */
+
+.informacion-traslado {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px 30px;
+}
+
+
+.dato-traslado {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 12px;
+}
+
+
+.dato-traslado > i {
+    color: var(--azul-principal);
+
+    font-size: 18px;
+
+    margin-top: 3px;
+}
+
+
+.dato-traslado strong {
+    display: block;
+
+    color: var(--texto);
+
+    font-size: 14px;
+
+    margin-bottom: 3px;
+}
+
+
+.dato-traslado p {
+    margin: 0;
+
+    color: #4B5563;
+
+    font-size: 14px;
+}
+
+
+/* ACCIONES DEL TRASLADO */
+
+.acciones-traslado {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 22px;
+    padding-top: 18px;
+
+    border-top: 1px solid var(--gris);
+}
+
+
+.acciones-traslado button {
+    border: none;
+    cursor: pointer;
+
+    padding: 8px 12px;
+
+    border-radius: 6px;
+
+    font-family: inherit;
+}
+
+
+.acciones-traslado .editar {
+    background-color: #EFF6FF;
+    color: var(--azul-principal);
+}
+
+
+.acciones-traslado .editar:hover {
+    background-color: var(--azul-principal);
+    color: var(--blanco);
+}
+
+
+.acciones-traslado .eliminar {
+    background-color: #FEE2E2;
+    color: #B91C1C;
+}
+
+
+.acciones-traslado .eliminar:hover {
+    background-color: #DC2626;
+    color: var(--blanco);
+}
+
+
+/* ESTADOS DEL TRASLADO */
+
+.estado-traslado {
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+.estado-curso {
+    background-color: #DBEAFE;
+    color: #1D4ED8;
+}
+
+
+.estado-destino {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+
+.estado-finalizado {
+    background-color: #DCFCE7;
+    color: #166534;
+}
+
+
+/* PANTALLAS PEQUEÑAS */
+
+@media (max-width: 768px) {
+
+    .informacion-traslado {
+        grid-template-columns: 1fr;
+    }
+
+
+    .encabezado-traslado {
+        align-items: flex-start;
+
+        gap: 10px;
+
+        flex-direction: column;
+    }
+
+}
+/* DOCUMENTACIÓN */
+
+.pagina-documentacion .campo-pacientes {
+    min-width: 0;
+}
+
+.pagina-documentacion select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    background: var(--blanco);
+    font: inherit;
+}
+
+.pagina-documentacion .boton-agendar {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    background: var(--azul-principal);
+    color: var(--blanco);
+    font: inherit;
+    cursor: pointer;
+}
+
+.pagina-documentacion .boton-agendar:hover {
+    background: var(--azul-oscuro);
+}
+
+/* Bloque de abajo más angosto */
+
+.espacios-documentacion {
+    width: 85%;
+    max-width: 850px;
+    margin: 25px auto 0;
+    scroll-margin-top: 15px;
+}
+
+/* Buscador */
+
+.busqueda-documentacion {
+    margin-bottom: 25px;
+}
+
+.botones-busqueda-documentacion {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+/* Lista de espacios */
+
+.lista-documentacion {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tarjeta-documentacion {
+    margin: 0;
+    padding: 20px;
+    border: 1px solid var(--gris);
+    border-left: 5px solid var(--azul-principal);
+    border-radius: 12px;
+    background: var(--gris-claro);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    scroll-margin-top: 15px;
+}
+
+/* Nombre visible con la tarjeta cerrada */
+
+.tarjeta-documentacion > summary {
+    cursor: pointer;
+    color: var(--azul-oscuro);
+    font-size: 16px;
+    font-weight: 600;
+    list-style-position: inside;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tarjeta-documentacion[open] > summary {
+    margin-bottom: 20px;
+}
+
+/* Encabezado */
+
+.encabezado-documentacion {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--gris);
+}
+
+.encabezado-documentacion strong {
+    color: var(--azul-oscuro);
+    font-size: 18px;
+}
+
+.tipo-documentacion,
+.estado-documentacion {
+    display: inline-block;
+    padding: 5px 8px;
+    border-radius: 6px;
+    background: #EFF6FF;
+    color: var(--azul-principal);
+    font-size: 13px;
+}
+
+/* Datos */
+
+.informacion-documentacion {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.dato-documentacion {
+    display: flex;
+    gap: 10px;
+    overflow-wrap: anywhere;
+}
+
+.dato-documentacion > i {
+    color: var(--azul-principal);
+    margin-top: 3px;
+}
+
+.dato-documentacion strong {
+    font-size: 14px;
+}
+
+.dato-documentacion p {
+    margin: 5px 0 0;
+    font-size: 14px;
+}
+
+/* Botones */
+
+.acciones-documentacion {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--gris);
+}
+
+.acciones-documentacion button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font: inherit;
+    cursor: pointer;
+}
+
+.acciones-documentacion .editar,
+.acciones-documentacion .ver-documentacion {
+    background: #EFF6FF;
+    color: var(--azul-principal);
+}
+
+.acciones-documentacion .editar:hover,
+.acciones-documentacion .ver-documentacion:hover {
+    background: var(--azul-principal);
+    color: var(--blanco);
+}
+
+/* Formulario para cambiar el médico */
+
+.form-medico-documentacion {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+}
+
+/* Pantallas pequeñas */
+
+@media (max-width: 768px) {
+
+    .espacios-documentacion {
+        width: 100%;
+    }
+
+    .pagina-documentacion .fila-pacientes {
+        flex-direction: column;
+    }
+
+    .informacion-documentacion {
+        grid-template-columns: 1fr;
+    }
+
+}

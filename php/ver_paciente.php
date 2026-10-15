@@ -2,6 +2,9 @@
 
 require_once 'conexion.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 
 // BUSCAR PACIENTE
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -13,17 +16,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($cedula != "") {
 
-            $sql = "SELECT * FROM Persona
-                    WHERE Cedula = '$cedula'";
+            $sql = "SELECT Persona.*
+                    FROM Persona
+                    INNER JOIN Paciente
+                    ON Persona.Cedula = Paciente.Cedula
+                    WHERE Persona.Cedula = '$cedula'";
 
         } elseif ($nombre != "") {
 
-            $sql = "SELECT * FROM Persona
-                    WHERE Nombre LIKE '%$nombre%'";
+            $sql = "SELECT Persona.*
+                    FROM Persona
+                    INNER JOIN Paciente
+                    ON Persona.Cedula = Paciente.Cedula
+                    WHERE Persona.Nombre LIKE '%$nombre%'";
 
         } else {
 
-            $sql = "SELECT * FROM Persona";
+            $sql = "SELECT Persona.*
+                    FROM Persona
+                    INNER JOIN Paciente
+                    ON Persona.Cedula = Paciente.Cedula";
 
         }
 
@@ -31,29 +43,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     }
 
-elseif (isset($_POST['mostrar_todos'])) {
-     $sql = "SELECT * FROM Persona";
-      $resultado = $con->query($sql); }
+    elseif (isset($_POST['mostrar_todos'])) {
+
+        $sql = "SELECT Persona.*
+                FROM Persona
+                INNER JOIN Paciente
+                ON Persona.Cedula = Paciente.Cedula";
+
+        $resultado = $con->query($sql);
+    }
+
 
     // ELIMINAR
     elseif (isset($_POST['eliminar'])) {
 
         $cedula = $_POST['eliminar'];
 
+        // Primero eliminar el usuario relacionado
+        $sql = "DELETE FROM Usuario
+                WHERE Cedula = '$cedula'";
+
+        if (!$con->query($sql)) {
+            die("ERROR USUARIO: " . $con->error);
+        }
+
+        // Después eliminar el paciente
         $sql = "DELETE FROM Paciente
                 WHERE Cedula = '$cedula'";
 
-        $con->query($sql);
+        if (!$con->query($sql)) {
+            die("ERROR PACIENTE: " . $con->error);
+        }
 
+        // Finalmente eliminar la persona
         $sql = "DELETE FROM Persona
                 WHERE Cedula = '$cedula'";
 
-        $con->query($sql);
+        if (!$con->query($sql)) {
+            die("ERROR PERSONA: " . $con->error);
+        }
 
-        $sql = "SELECT * FROM Persona";
+        // Mostrar nuevamente todos los pacientes
+        $sql = "SELECT Persona.*
+                FROM Persona
+                INNER JOIN Paciente
+                ON Persona.Cedula = Paciente.Cedula";
 
         $resultado = $con->query($sql);
-
     }
 
 
@@ -62,14 +98,20 @@ elseif (isset($_POST['mostrar_todos'])) {
 
         $cedula = $_POST['modificar'];
 
-        $sql = "SELECT * FROM Persona
-                WHERE Cedula = '$cedula'";
+        $sql = "SELECT Persona.*
+                FROM Persona
+                INNER JOIN Paciente
+                ON Persona.Cedula = Paciente.Cedula
+                WHERE Persona.Cedula = '$cedula'";
 
         $resultado_modificar = $con->query($sql);
 
         $persona_modificar = $resultado_modificar->fetch_assoc();
 
-        $sql = "SELECT * FROM Persona";
+        $sql = "SELECT Persona.*
+                FROM Persona
+                INNER JOIN Paciente
+                ON Persona.Cedula = Paciente.Cedula";
 
         $resultado = $con->query($sql);
 
@@ -98,7 +140,10 @@ elseif (isset($_POST['mostrar_todos'])) {
 
         $con->query($sql);
 
-        $sql = "SELECT * FROM Persona";
+        $sql = "SELECT Persona.*
+                FROM Persona
+                INNER JOIN Paciente
+                ON Persona.Cedula = Paciente.Cedula";
 
         $resultado = $con->query($sql);
 
@@ -107,7 +152,10 @@ elseif (isset($_POST['mostrar_todos'])) {
 } else {
 
     // MOSTRAR TODOS LOS PACIENTES AL ENTRAR
-    $sql = "SELECT * FROM Persona";
+    $sql = "SELECT Persona.*
+            FROM Persona
+            INNER JOIN Paciente
+            ON Persona.Cedula = Paciente.Cedula";
 
     $resultado = $con->query($sql);
 
@@ -396,11 +444,17 @@ elseif (isset($_POST['mostrar_todos'])) {
                     Buscar
 
                 </button>
-                <button type="submit" 
-                name="mostrar_todos" 
-                class="boton-agendar"> 
-                <i class="fa-solid fa-list"></i> Mostrar todos 
-            </button>
+
+                <button
+                    type="submit"
+                    name="mostrar_todos"
+                    class="boton-agendar">
+
+                    <i class="fa-solid fa-list"></i>
+
+                    Mostrar todos
+
+                </button>
 
 
             </form>
@@ -417,39 +471,100 @@ elseif (isset($_POST['mostrar_todos'])) {
         ?>
 
         <div class="tarjeta">
-             <h3>Modificar paciente</h3> 
-             <form action="ver_paciente.php" method="POST" class="form-modificar"> 
-                <div class="campos-modificar"> 
-                    <div> 
-                        <label>Nombre:</label> 
-                <input type="text" name="nombre" value="<?php echo $persona_modificar['Nombre']; ?>">
-             </div> 
-             <div> 
-                <label>Apellido:</label> 
-                <input type="text" name="apellido" value="<?php echo $persona_modificar['Apellido']; ?>"> 
-            </div> 
-            <div> 
-                <label>Fecha Nacimiento:</label> 
-                <input type="date" name="nacimiento" value="<?php echo $persona_modificar['Fecha_Nacimiento']; ?>">
-             </div> 
-             <div> 
-                <label>Dirección:</label>
-                 <input type="text" name="direccion" value="<?php echo $persona_modificar['Direccion']; ?>">
-             </div> 
-             <div> 
-                <label>Correo:</label>
-                 <input type="text" name="correo" value="<?php echo $persona_modificar['Correo']; ?>">
-                 </div>
-                  <div>
-                     <label>Teléfono:</label>
-                      <input type="text" name="telefono" value="<?php echo $persona_modificar['Telefono']; ?>">
-                     </div>
-                     </div>
-                      <input type="hidden" name="cedula" value="<?php echo $persona_modificar['Cedula']; ?>">
-                       <button type="submit" name="guardar_modificacion" class="boton-guardar-modificacion">
-                         <i class="fa-solid fa-check"></i> Guardar cambios </button>
-                         </form> 
-                        </div>
+
+            <h3>Modificar paciente</h3>
+
+            <form action="ver_paciente.php" method="POST" class="form-modificar">
+
+                <div class="campos-modificar">
+
+                    <div>
+
+                        <label>Nombre:</label>
+
+                        <input
+                            type="text"
+                            name="nombre"
+                            value="<?php echo $persona_modificar['Nombre']; ?>">
+
+                    </div>
+
+                    <div>
+
+                        <label>Apellido:</label>
+
+                        <input
+                            type="text"
+                            name="apellido"
+                            value="<?php echo $persona_modificar['Apellido']; ?>">
+
+                    </div>
+
+                    <div>
+
+                        <label>Fecha Nacimiento:</label>
+
+                        <input
+                            type="date"
+                            name="nacimiento"
+                            value="<?php echo $persona_modificar['Fecha_Nacimiento']; ?>">
+
+                    </div>
+
+                    <div>
+
+                        <label>Dirección:</label>
+
+                        <input
+                            type="text"
+                            name="direccion"
+                            value="<?php echo $persona_modificar['Direccion']; ?>">
+
+                    </div>
+
+                    <div>
+
+                        <label>Correo:</label>
+
+                        <input
+                            type="text"
+                            name="correo"
+                            value="<?php echo $persona_modificar['Correo']; ?>">
+
+                    </div>
+
+                    <div>
+
+                        <label>Teléfono:</label>
+
+                        <input
+                            type="text"
+                            name="telefono"
+                            value="<?php echo $persona_modificar['Telefono']; ?>">
+
+                    </div>
+
+                </div>
+
+                <input
+                    type="hidden"
+                    name="cedula"
+                    value="<?php echo $persona_modificar['Cedula']; ?>">
+
+                <button
+                    type="submit"
+                    name="guardar_modificacion"
+                    class="boton-guardar-modificacion">
+
+                    <i class="fa-solid fa-check"></i>
+
+                    Guardar cambios
+
+                </button>
+
+            </form>
+
+        </div>
 
         <?php
 
@@ -554,7 +669,7 @@ elseif (isset($_POST['mostrar_todos'])) {
 
                             <!-- ELIMINAR -->
 
-                            <form action="ver_paciente.php" method="POST">
+                            <form action="/prueba/php/ver_paciente.php" method="POST">
 
                                 <button
                                     name="eliminar"

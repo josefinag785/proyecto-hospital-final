@@ -13,20 +13,94 @@ if (isset($_POST["aceptar"])) {
     $id_usuario = $_POST["id_usuario"];
     $rol = $_POST["rol"];
 
-    $sql = "UPDATE Usuario
-            SET Rol = '$rol',
-                Estado = 'Activo'
-            WHERE ID_Usuario = '$id_usuario'";
 
-    if ($con->query($sql) === TRUE) {
+    // Buscar la cédula del usuario
 
-        $mensaje = "Solicitud aceptada correctamente.";
+    $sqlCedula = "SELECT Cedula
+                  FROM Usuario
+                  WHERE ID_Usuario = '$id_usuario'";
+
+    $resultadoCedula = $con->query($sqlCedula);
+
+
+    if ($resultadoCedula && $resultadoCedula->num_rows > 0) {
+
+        $usuario = $resultadoCedula->fetch_assoc();
+
+        $cedula = $usuario["Cedula"];
+
+
+        // Activar el usuario
+
+        $sql = "UPDATE Usuario
+                SET Rol = '$rol',
+                    Estado = 'Activo'
+                WHERE ID_Usuario = '$id_usuario'";
+
+
+        if ($con->query($sql) === TRUE) {
+
+
+            // Si el rol es Conductor,
+            // crear también el registro en Funcionario
+
+            if ($rol == "Medico" || $rol == "Conductor" || $rol == "Funcionario") {
+
+
+                // Comprobar si ya existe en Funcionario
+
+                $sqlExiste = "SELECT *
+                              FROM Funcionario
+                              WHERE Cedula = '$cedula'";
+
+                $resultadoExiste = $con->query($sqlExiste);
+
+
+                if ($resultadoExiste->num_rows == 0) {
+
+             $sqlFuncionario = "INSERT INTO Funcionario
+                   (Cedula, Tipo)
+                   VALUES
+                   ('$cedula', '$rol')";
+
+
+                    if ($con->query($sqlFuncionario) === TRUE) {
+
+                        $mensaje = "Solicitud aceptada correctamente.";
+
+                    } else {
+
+                        $mensaje = "Usuario activado, pero hubo un error al crear el funcionario: "
+                                 . $con->error;
+
+                    }
+
+                } else {
+
+                    $mensaje = "Solicitud aceptada correctamente. El funcionario ya estaba registrado.";
+
+                }
+
+
+            } else {
+
+                $mensaje = "Solicitud aceptada correctamente.";
+
+            }
+
+
+        } else {
+
+            $mensaje = "Error al aceptar la solicitud: " . $con->error;
+
+        }
 
     } else {
 
-        $mensaje = "Error al aceptar la solicitud: " . $con->error;
+        $mensaje = "No se encontró la cédula del usuario.";
 
     }
+
 }
 
 
@@ -353,7 +427,7 @@ $resultado = $con->query($sql);
                                         <option value="Administrador">
                                             Administrador
                                         </option>
-                                        <option value="Administrador">
+                                        <option value="Conductor">
                                             Conductor
                                         </option>
 
