@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $modelo = $_POST["modelo"];
         $estado = $_POST["estado"];
 
-        // El ID se genera automáticamente en la base de datos
+        // El ID se genera automaticamente
         $sql = "INSERT INTO Ambulancia
                 (Matricula, Modelo, Estado)
                 VALUES
