@@ -134,7 +134,7 @@ if (isset($_POST['modificar_medico'])) {
     }
 }
 
-// CREAR UN ESPACIO DE DOCUMENTACIÓN
+/// CREAR UN ESPACIO DE DOCUMENTACIÓN
 if (isset($_POST['crear_documentacion'])) {
 
     if ($id_paciente < 1) {
@@ -147,78 +147,103 @@ if (isset($_POST['crear_documentacion'])) {
 
     } else {
 
-        // Comprobar que el médico esté activo.
-        $sql = "SELECT Funcionario.ID_Funcionario
-                FROM Funcionario
-                INNER JOIN Usuario
-                    ON Funcionario.Cedula = Usuario.Cedula
-                WHERE Funcionario.ID_Funcionario = $id_funcionario
-                  AND Funcionario.Tipo = 'Medico'
-                  AND Usuario.Estado = 'Activo'";
+        // Comprobar si el paciente ya tiene un espacio.
+        $sql = "SELECT ID_Documento
+                FROM Documento
+                WHERE ID_Paciente = $id_paciente
+                LIMIT 1";
 
-        $resultadoMedico = $con->query($sql);
+        $resultadoEspacio = $con->query($sql);
 
-        if (!$resultadoMedico) {
+        if (!$resultadoEspacio) {
 
-            $mensaje = 'Error al crear el espacio. Compruebe que el paciente siga registrado.';
+            $mensaje = 'No se pudo comprobar si el paciente ya tiene un espacio.';
             error_log($con->error);
 
-        } elseif ($resultadoMedico->num_rows == 0) {
+        } elseif ($resultadoEspacio->num_rows > 0) {
 
-            $mensaje = 'El médico seleccionado no existe o está inactivo.';
+            $mensaje = 'Este paciente ya tiene un espacio de documentación. Puede modificar su médico desde el botón del lápiz.';
 
         } else {
 
-            $fecha = date('Y-m-d');
+            // Comprobar que el médico exista y esté activo.
+            $sql = "SELECT Funcionario.ID_Funcionario
+                    FROM Funcionario
+                    INNER JOIN Usuario
+                        ON Funcionario.Cedula = Usuario.Cedula
+                    WHERE Funcionario.ID_Funcionario = $id_funcionario
+                      AND Funcionario.Tipo = 'Medico'
+                      AND Usuario.Estado = 'Activo'";
 
-            // Crear el espacio con sus datos iniciales.
-            $sql = "INSERT INTO Documento
-                    (
-                        Fecha_Emision,
-                        Tipo,
-                        Descripcion,
-                        ID_Paciente,
-                        ID_Funcionario,
-                        Estado
-                    )
-                    VALUES
-                    (
-                        '$fecha',
-                        'Documentación médica',
-                        'Espacio de documentación del paciente.',
-                        $id_paciente,
-                        $id_funcionario,
-                        'Pendiente'
-                    )";
+            $resultadoMedico = $con->query($sql);
 
-            if ($con->query($sql)) {
-
-                header(
-                    'Location: documentacion.php?mensaje=documentacion_creada',
-                    true,
-                    303
-                );
-
-                exit;
-
-            } else {
+            if (!$resultadoMedico) {
 
                 $mensaje = 'Error al crear el espacio. Compruebe que el paciente siga registrado.';
                 error_log($con->error);
+
+            } elseif ($resultadoMedico->num_rows == 0) {
+
+                $mensaje = 'El médico seleccionado no existe o está inactivo.';
+
+            } else {
+
+                $fecha = date('Y-m-d');
+
+                $sql = "INSERT INTO Documento
+                        (
+                            Fecha_Emision,
+                            Tipo,
+                            Descripcion,
+                            ID_Paciente,
+                            ID_Funcionario,
+                            Estado
+                        )
+                        VALUES
+                        (
+                            '$fecha',
+                            'Documentación médica',
+                            'Espacio de documentación del paciente.',
+                            $id_paciente,
+                            $id_funcionario,
+                            'Pendiente'
+                        )";
+
+                if ($con->query($sql)) {
+
+                    header(
+                        'Location: documentacion.php?mensaje=documentacion_creada',
+                        true,
+                        303
+                    );
+
+                    exit;
+
+                } elseif ($con->errno == 1062) {
+
+                    $mensaje = 'Este paciente ya tiene un espacio de documentación.';
+
+                } else {
+
+                    $mensaje = 'Error al crear el espacio. Compruebe que el paciente siga registrado.';
+                    error_log($con->error);
+                }
             }
         }
     }
 }
-
-// OBTENER PACIENTES
+// OBTENER PACIENTES SIN ESPACIO DE DOCUMENTACIÓN
 $sqlPacientes = "SELECT Paciente.ID_Paciente,
-                       Persona.Nombre,
-                       Persona.Apellido,
-                       Persona.Cedula
-                FROM Paciente
-                INNER JOIN Persona
-                    ON Paciente.Cedula = Persona.Cedula
-                ORDER BY Persona.Apellido, Persona.Nombre";
+                        Persona.Nombre,
+                        Persona.Apellido,
+                        Persona.Cedula
+                 FROM Paciente
+                 INNER JOIN Persona
+                     ON Paciente.Cedula = Persona.Cedula
+                 LEFT JOIN Documento
+                     ON Paciente.ID_Paciente = Documento.ID_Paciente
+                 WHERE Documento.ID_Documento IS NULL
+                 ORDER BY Persona.Apellido, Persona.Nombre";
 
 $resultadoPacientes = $con->query($sqlPacientes);
 

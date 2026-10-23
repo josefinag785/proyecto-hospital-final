@@ -1,11 +1,13 @@
 <?php
 
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
 require_once 'conexion.php';
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-
+$mensaje = '';
 // BUSCAR PACIENTE
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -55,43 +57,86 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     // ELIMINAR
-    elseif (isset($_POST['eliminar'])) {
+elseif (isset($_POST['eliminar'])) {
 
-        $cedula = $_POST['eliminar'];
+    $cedula = $_POST['eliminar'];
 
-        // Primero eliminar el usuario relacionado
-        $sql = "DELETE FROM Usuario
-                WHERE Cedula = '$cedula'";
+    if (!is_string($cedula) || trim($cedula) == '') {
 
-        if (!$con->query($sql)) {
-            die("ERROR USUARIO: " . $con->error);
+        $mensaje = 'Seleccione un paciente válido.';
+
+    } else {
+
+        $cedula = trim($cedula);
+
+        try {
+
+            // GUARDAR TODOS LOS CAMBIOS JUNTOS
+            $con->begin_transaction();
+
+            // PRIMERO ELIMINAR EL PACIENTE
+            $consulta = $con->prepare(
+                'DELETE FROM Paciente WHERE Cedula = ?'
+            );
+
+            $consulta->bind_param('s', $cedula);
+            $consulta->execute();
+
+            if ($consulta->affected_rows == 0) {
+
+                $con->rollback();
+
+                $mensaje = 'El paciente ya no está registrado.';
+
+            } else {
+
+                // ELIMINAR EL USUARIO RELACIONADO
+                $consulta = $con->prepare(
+                    'DELETE FROM Usuario WHERE Cedula = ?'
+                );
+
+                $consulta->bind_param('s', $cedula);
+                $consulta->execute();
+
+                // ELIMINAR LA PERSONA
+                $consulta = $con->prepare(
+                    'DELETE FROM Persona WHERE Cedula = ?'
+                );
+
+                $consulta->bind_param('s', $cedula);
+                $consulta->execute();
+
+                $con->commit();
+
+                $mensaje = 'Paciente eliminado correctamente.';
+            }
+
+        } catch (mysqli_sql_exception $error) {
+
+            // DESHACER LOS CAMBIOS SI ALGO FALLÓ
+            $con->rollback();
+
+            if ((int) $error->getCode() == 1451) {
+
+                $mensaje = 'No se puede eliminar este paciente porque tiene traslados, documentación u otros registros relacionados.';
+
+            } else {
+
+                error_log($error->getMessage());
+
+                $mensaje = 'No se pudo eliminar el paciente. Intente nuevamente.';
+            }
         }
-
-        // Después eliminar el paciente
-        $sql = "DELETE FROM Paciente
-                WHERE Cedula = '$cedula'";
-
-        if (!$con->query($sql)) {
-            die("ERROR PACIENTE: " . $con->error);
-        }
-
-        // Finalmente eliminar la persona
-        $sql = "DELETE FROM Persona
-                WHERE Cedula = '$cedula'";
-
-        if (!$con->query($sql)) {
-            die("ERROR PERSONA: " . $con->error);
-        }
-
-        // Mostrar nuevamente todos los pacientes
-        $sql = "SELECT Persona.*
-                FROM Persona
-                INNER JOIN Paciente
-                ON Persona.Cedula = Paciente.Cedula";
-
-        $resultado = $con->query($sql);
     }
 
+    // MOSTRAR NUEVAMENTE TODOS LOS PACIENTES
+    $sql = "SELECT Persona.*
+            FROM Persona
+            INNER JOIN Paciente
+            ON Persona.Cedula = Paciente.Cedula";
+
+    $resultado = $con->query($sql);
+}
 
     // MOSTRAR FORMULARIO PARA MODIFICAR
     elseif (isset($_POST['modificar'])) {
@@ -378,7 +423,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             Busque y consulte la información de los pacientes registrados.
 
         </p>
+<?php if ($mensaje != '') { ?>
 
+    <p class="aviso-medico" role="status">
+
+        <?php
+        echo htmlspecialchars($mensaje, ENT_QUOTES, 'UTF-8');
+        ?>
+
+    </p>
+
+<?php } ?>
 
         <!-- BUSCADOR -->
 

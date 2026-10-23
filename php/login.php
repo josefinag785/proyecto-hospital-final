@@ -1,48 +1,80 @@
-
 <?php
+
+session_start();
+
+mysqli_report(MYSQLI_REPORT_OFF);
 
 require_once 'conexion.php';
 
-$mensaje = "";
+$con->set_charset('utf8mb4');
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$mensaje = '';
 
-    $username = $_POST["username"];
-    $password = $_POST["password"];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    // Buscar el usuario por su cédula
-    $sql = "SELECT * FROM Usuario
-            WHERE Cedula = '$username'";
+    $username = '';
+    $password = '';
+
+    if (isset($_POST['username']) && is_string($_POST['username'])) {
+        $username = trim($_POST['username']);
+    }
+
+    if (isset($_POST['password']) && is_string($_POST['password'])) {
+        $password = $_POST['password'];
+    }
+
+    $cedula_sql = $con->real_escape_string($username);
+
+    $sql = "SELECT ID_Usuario, Cedula, Contraseña, Rol, Estado
+            FROM Usuario
+            WHERE Cedula = '$cedula_sql'";
 
     $resultado = $con->query($sql);
 
-    if ($resultado->num_rows == 0) {
+    if (!$resultado) {
 
-        $mensaje = "La cédula o la contraseña son incorrectas.";
+        error_log($con->error);
+
+        $mensaje = 'No se pudo iniciar sesión. Intente nuevamente.';
+
+    } elseif ($resultado->num_rows == 0) {
+
+        $mensaje = 'La cédula o la contraseña son incorrectas.';
 
     } else {
 
         $usuario = $resultado->fetch_assoc();
 
-        // Comprobar la contraseña
-        if (password_verify($password, $usuario["Contraseña"])) {
+        if (!password_verify($password, $usuario['Contraseña'])) {
 
-            // Comprobar si la cuenta está activa
-if ($usuario["Estado"] == "Activo") {
+            $mensaje = 'La cédula o la contraseña son incorrectas.';
 
-    header("Location: /prueba/panelprincipal.html");
-    exit;
+        } elseif ($usuario['Estado'] != 'Activo') {
 
-} else {
-
-    $mensaje = "Su cuenta todavía no está activa.";
-
-}
+            $mensaje = 'Su cuenta todavía no está activa.';
 
         } else {
 
-            $mensaje = "La cédula o la contraseña son incorrectas.";
+            // Guardar qué usuario acaba de ingresar.
+            $_SESSION = [];
 
+            session_regenerate_id(true);
+
+            $_SESSION['id_usuario'] = (int) $usuario['ID_Usuario'];
+            $_SESSION['cedula'] = $usuario['Cedula'];
+            $_SESSION['rol'] = $usuario['Rol'];
+
+            if ($usuario['Rol'] == 'Medico') {
+
+               header('Location: /prueba/php/MEDICO/inicio_medico.php');
+
+            } else {
+
+                header('Location: /prueba/panelprincipal.html');
+
+            }
+
+            exit;
         }
     }
 }

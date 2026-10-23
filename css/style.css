@@ -1994,3 +1994,147 @@ table.big-table tbody tr:hover {
     }
 
 }
+/* DOCUMENTACIÓN DEL MÉDICO */
+
+.pagina-medico {
+    min-width: 0;
+}
+
+.lista-pacientes-medico {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.paciente-medico {
+    margin: 0;
+    border: 1px solid var(--gris);
+    border-left: 5px solid var(--azul-principal);
+    scroll-margin-top: 15px;
+}
+
+.paciente-medico > summary {
+    cursor: pointer;
+    color: var(--azul-oscuro);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.paciente-medico > summary span {
+    display: inline-block;
+    margin-left: 12px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.paciente-medico[open] > summary {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--gris);
+}
+
+.pagina-medico .campo {
+    min-width: 0;
+}
+
+.pagina-medico .campo input,
+.pagina-medico .campo textarea {
+    width: 100%;
+}
+
+.pagina-medico input[readonly] {
+    background: var(--gris-claro);
+}
+
+.form-documentacion-medico {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.form-documentacion-medico small {
+    margin-top: 6px;
+    color: #6B7280;
+}
+
+.aviso-medico {
+    padding: 15px;
+    border-left: 4px solid var(--azul-principal);
+    border-radius: 8px;
+    background: #EFF6FF;
+    color: var(--azul-oscuro);
+}
+
+.archivos-medico {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.archivo-medico {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px;
+    border: 1px solid var(--gris);
+    border-radius: 8px;
+    background: var(--gris-claro);
+    overflow-wrap: anywhere;
+}
+
+.archivo-medico strong {
+    color: var(--azul-oscuro);
+}
+
+.archivo-medico p {
+    margin: 6px 0;
+}
+
+.ver-pdf-medico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 9px 13px;
+    border-radius: 7px;
+    background: var(--azul-principal);
+    color: var(--blanco);
+    text-decoration: none;
+}
+
+.ver-pdf-medico:hover {
+    background: var(--azul-oscuro);
+}
+
+.menu-medico .salir-medico {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--blanco);
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+}
+
+.menu-medico .salir-medico:hover {
+    background: var(--azul-principal);
+}
+
+@media (max-width: 768px) {
+
+    .pagina-medico .fila,
+    .archivo-medico {
+        flex-direction: column;
+    }
+
+    .archivo-medico {
+        align-items: flex-start;
+    }
+
+}
