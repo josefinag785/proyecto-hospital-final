@@ -370,101 +370,176 @@ if (!$resultadoDocumentos) {
 <div class="perfil-contenedor">
 
     <!-- MENÚ LATERAL -->
-    <aside class="menu-lateral">
+     <aside class="menu-lateral">
 
         <h3>Menú</h3>
 
+
+        <!-- INICIO -->
+
         <a href="/prueba/panelprincipal.html">
+
             <i class="fa-solid fa-house"></i>
+
             Inicio
+
         </a>
+
+
+        <!-- PACIENTES -->
 
         <details class="menu-desplegable">
 
             <summary>
+
                 <i class="fa-solid fa-user-plus"></i>
+
                 Pacientes
+
             </summary>
 
             <div class="submenu">
 
                 <a href="/prueba/php/nuevo_paciente.php">
+
                     <i class="fa-solid fa-plus"></i>
+
                     Nuevo paciente
+
                 </a>
 
                 <a href="/prueba/php/ver_paciente.php">
+
                     <i class="fa-solid fa-list"></i>
+
                     Ver pacientes
+
                 </a>
 
             </div>
 
         </details>
 
+
+        <!-- AMBULANCIAS -->
+
         <details class="menu-desplegable">
 
             <summary>
+
                 <i class="fa-solid fa-truck-medical"></i>
+
                 Ambulancias
+
             </summary>
 
             <div class="submenu">
 
                 <a href="/prueba/php/nuevo_traslado.php">
+
                     <i class="fa-solid fa-plus"></i>
-                    Nuevo traslado
+
+                    Nuevo registro
+
                 </a>
 
                 <a href="/prueba/php/ver_traslados.php">
-                    <i class="fa-solid fa-list"></i>
-                    Ver traslados
-                </a>
 
+                    <i class="fa-solid fa-list"></i>
+
+                    Ver registros
+
+                </a>
                 <a href="/prueba/php/Gestion_Ambulancia.php">
-                    <i class="fa-solid fa-ambulance"></i>
-                    Gestión de ambulancias
+                   <i class="fa-solid fa-cogs"></i>
+                    Gestión de Ambulancias
                 </a>
 
             </div>
 
         </details>
 
-        <a href="/prueba/php/documentacion.php">
-            <i class="fa-solid fa-file-medical"></i>
-            Documentación
-        </a>
+             <!-- Documentación -->
 
-        <details class="menu-desplegable">
+       <details class="menu-desplegable">
 
             <summary>
+
+                <i class="fa-solid fa-file-alt"></i>
+
+                Documentación
+
+            </summary>
+
+            <div class="submenu">
+
+                <a href="/prueba/php/documentacion.php">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Nueva documentación
+
+                </a>
+
+                <a href="/prueba/php/ver_documentacion.php">
+
+                    <i class="fa-solid fa-list"></i>
+
+                    Ver documentación
+
+                </a>
+
+            </div>
+
+        </details>
+
+        <!-- USUARIOS -->
+
+       <details class="menu-desplegable">
+
+            <summary>
+
                 <i class="fa-solid fa-user-plus"></i>
+
                 Usuarios
+
             </summary>
 
             <div class="submenu">
 
                 <a href="/prueba/php/panel_admin.php">
+
                     <i class="fa-solid fa-plus"></i>
-                    Solicitudes
+
+                   Solicitudes
+
                 </a>
 
                 <a href="/prueba/php/lista_usuarios.php">
+
                     <i class="fa-solid fa-list"></i>
+
                     Lista de Usuarios
+
                 </a>
 
             </div>
 
         </details>
 
+
+        <!-- CERRAR SESIÓN -->
+
         <a href="/prueba/index.html">
+
             <i class="fa-solid fa-right-from-bracket"></i>
+
             Cerrar sesión
+
         </a>
 
     </aside>
-
+    
     <!-- CONTENIDO -->
     <main class="contenido pagina-documentacion">
 

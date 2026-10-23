@@ -436,7 +436,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             </summary>
 
-
             <div class="submenu">
 
                 <a href="/prueba/php/nuevo_paciente.php">
@@ -446,7 +445,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     Nuevo paciente
 
                 </a>
-
 
                 <a href="/prueba/php/ver_paciente.php">
 
@@ -473,32 +471,59 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             </summary>
 
-
             <div class="submenu">
 
                 <a href="/prueba/php/nuevo_traslado.php">
 
                     <i class="fa-solid fa-plus"></i>
 
-                    Nuevo traslado
+                    Nuevo registro
 
                 </a>
-
 
                 <a href="/prueba/php/ver_traslados.php">
 
                     <i class="fa-solid fa-list"></i>
 
-                    Ver traslados
+                    Ver registros
+
+                </a>
+                <a href="/prueba/php/Gestion_Ambulancia.php">
+                   <i class="fa-solid fa-cogs"></i>
+                    Gestión de Ambulancias
+                </a>
+
+            </div>
+
+        </details>
+
+             <!-- Documentación -->
+
+       <details class="menu-desplegable">
+
+            <summary>
+
+                <i class="fa-solid fa-file-alt"></i>
+
+                Documentación
+
+            </summary>
+
+            <div class="submenu">
+
+                <a href="/prueba/php/documentacion.php">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Nueva documentación
 
                 </a>
 
+                <a href="/prueba/php/ver_documentacion.php">
 
-                <a href="/prueba/php/Gestion_Ambulancia.php">
+                    <i class="fa-solid fa-list"></i>
 
-                    <i class="fa-solid fa-ambulance"></i>
-
-                    Gestión de ambulancias
+                    Ver documentación
 
                 </a>
 
@@ -506,10 +531,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         </details>
 
-
         <!-- USUARIOS -->
 
-        <details class="menu-desplegable">
+       <details class="menu-desplegable">
 
             <summary>
 
@@ -519,17 +543,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             </summary>
 
-
             <div class="submenu">
 
                 <a href="/prueba/php/panel_admin.php">
 
                     <i class="fa-solid fa-plus"></i>
 
-                    Solicitudes
+                   Solicitudes
 
                 </a>
-
 
                 <a href="/prueba/php/lista_usuarios.php">
 

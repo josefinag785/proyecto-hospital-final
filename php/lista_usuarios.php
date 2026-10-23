@@ -132,7 +132,7 @@ $resultado_desactivados = $con->query($sql_desactivados);
 
     <!-- MENÚ LATERAL -->
 
-    <aside class="menu-lateral">
+        <aside class="menu-lateral">
 
         <h3>Menú</h3>
 
@@ -205,11 +205,49 @@ $resultado_desactivados = $con->query($sql_desactivados);
 
                 </a>
 
-                <a href="/prueba/php/registro_ambulancias.html">
+                <a href="/prueba/php/ver_traslados.php">
 
                     <i class="fa-solid fa-list"></i>
 
                     Ver registros
+
+                </a>
+                <a href="/prueba/php/Gestion_Ambulancia.php">
+                   <i class="fa-solid fa-cogs"></i>
+                    Gestión de Ambulancias
+                </a>
+
+            </div>
+
+        </details>
+
+             <!-- Documentación -->
+
+       <details class="menu-desplegable">
+
+            <summary>
+
+                <i class="fa-solid fa-file-alt"></i>
+
+                Documentación
+
+            </summary>
+
+            <div class="submenu">
+
+                <a href="/prueba/php/documentacion.php">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Nueva documentación
+
+                </a>
+
+                <a href="/prueba/php/ver_documentacion.php">
+
+                    <i class="fa-solid fa-list"></i>
+
+                    Ver documentación
 
                 </a>
 
@@ -217,10 +255,9 @@ $resultado_desactivados = $con->query($sql_desactivados);
 
         </details>
 
-
         <!-- USUARIOS -->
 
-        <details class="menu-desplegable">
+       <details class="menu-desplegable">
 
             <summary>
 
@@ -236,7 +273,7 @@ $resultado_desactivados = $con->query($sql_desactivados);
 
                     <i class="fa-solid fa-plus"></i>
 
-                    Solicitudes
+                   Solicitudes
 
                 </a>
 

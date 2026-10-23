@@ -44,137 +44,175 @@ require_once 'conexion.php';
 
     <div class="perfil-contenedor">
 
-        <aside class="menu-lateral">
+      <aside class="menu-lateral">
 
-            <h3>Menú</h3>
+        <h3>Menú</h3>
 
-            <!-- INICIO -->
 
-            <a href="/prueba/panelprincipal.html">
+        <!-- INICIO -->
 
-                <i class="fa-solid fa-house"></i>
+        <a href="/prueba/panelprincipal.html">
 
-                Inicio
+            <i class="fa-solid fa-house"></i>
 
-            </a>
+            Inicio
 
+        </a>
 
-            <!-- PACIENTES -->
 
-            <details class="menu-desplegable">
+        <!-- PACIENTES -->
 
-                <summary>
+        <details class="menu-desplegable">
 
-                    <i class="fa-solid fa-user-plus"></i>
+            <summary>
 
-                    Pacientes
+                <i class="fa-solid fa-user-plus"></i>
 
-                </summary>
+                Pacientes
 
-                <div class="submenu">
+            </summary>
 
-                    <a href="/prueba/php/nuevo_paciente.php">
+            <div class="submenu">
 
-                        <i class="fa-solid fa-plus"></i>
+                <a href="/prueba/php/nuevo_paciente.php">
 
-                        Nuevo paciente
+                    <i class="fa-solid fa-plus"></i>
 
-                    </a>
+                    Nuevo paciente
 
-                    <a href="/prueba/php/ver_paciente.php">
+                </a>
 
-                        <i class="fa-solid fa-list"></i>
+                <a href="/prueba/php/ver_paciente.php">
 
-                        Ver pacientes
+                    <i class="fa-solid fa-list"></i>
 
-                    </a>
+                    Ver pacientes
 
-                </div>
+                </a>
 
-            </details>
+            </div>
 
+        </details>
 
-            <!-- AMBULANCIAS -->
 
-            <details class="menu-desplegable">
+        <!-- AMBULANCIAS -->
 
-                <summary>
+        <details class="menu-desplegable">
 
-                    <i class="fa-solid fa-truck-medical"></i>
+            <summary>
 
-                    Ambulancias
+                <i class="fa-solid fa-truck-medical"></i>
 
-                </summary>
+                Ambulancias
 
-                <div class="submenu">
+            </summary>
 
-                    <a href="/prueba/php/nuevo_traslado.php">
+            <div class="submenu">
 
-                        <i class="fa-solid fa-plus"></i>
+                <a href="/prueba/php/nuevo_traslado.php">
 
-                        Nuevo registro
+                    <i class="fa-solid fa-plus"></i>
 
-                    </a>
+                    Nuevo registro
 
-                    <a href="/prueba/php/registro_ambulancias.html">
+                </a>
 
-                        <i class="fa-solid fa-list"></i>
+                <a href="/prueba/php/ver_traslados.php">
 
-                        Ver registros
+                    <i class="fa-solid fa-list"></i>
 
-                    </a>
+                    Ver registros
 
-                </div>
+                </a>
+                <a href="/prueba/php/Gestion_Ambulancia.php">
+                   <i class="fa-solid fa-cogs"></i>
+                    Gestión de Ambulancias
+                </a>
 
-            </details>
+            </div>
 
+        </details>
 
-            <!-- USUARIOS -->
+             <!-- Documentación -->
 
-            <details class="menu-desplegable">
+       <details class="menu-desplegable">
 
-                <summary>
+            <summary>
 
-                    <i class="fa-solid fa-user-plus"></i>
+                <i class="fa-solid fa-file-alt"></i>
 
-                    Usuarios
+                Documentación
 
-                </summary>
+            </summary>
 
-                <div class="submenu">
+            <div class="submenu">
 
-                    <a href="/prueba/php/panel_admin.php">
+                <a href="/prueba/php/documentacion.php">
 
-                        <i class="fa-solid fa-plus"></i>
+                    <i class="fa-solid fa-plus"></i>
 
-                        Solicitudes
+                    Nueva documentación
 
-                    </a>
+                </a>
 
-                    <a href="/prueba/php/lista_usuarios.php">
+                <a href="/prueba/php/ver_documentacion.php">
 
-                        <i class="fa-solid fa-list"></i>
+                    <i class="fa-solid fa-list"></i>
 
-                        Lista de Usuarios
+                    Ver documentación
 
-                    </a>
+                </a>
 
-                </div>
+            </div>
 
-            </details>
+        </details>
 
+        <!-- USUARIOS -->
 
-            <!-- CERRAR SESIÓN -->
+       <details class="menu-desplegable">
 
-            <a href="/prueba/index.html">
+            <summary>
 
-                <i class="fa-solid fa-right-from-bracket"></i>
+                <i class="fa-solid fa-user-plus"></i>
 
-                Cerrar sesión
+                Usuarios
 
-            </a>
+            </summary>
 
-        </aside>
+            <div class="submenu">
+
+                <a href="/prueba/php/panel_admin.php">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                   Solicitudes
+
+                </a>
+
+                <a href="/prueba/php/lista_usuarios.php">
+
+                    <i class="fa-solid fa-list"></i>
+
+                    Lista de Usuarios
+
+                </a>
+
+            </div>
+
+        </details>
+
+
+        <!-- CERRAR SESIÓN -->
+
+        <a href="/prueba/index.html">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Cerrar sesión
+
+        </a>
+
+    </aside>
 
 
         <main class="contenido">

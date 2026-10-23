@@ -455,13 +455,19 @@ if (!$resultado) {
 
     <!-- MENÚ LATERAL DEL ADMINISTRADOR -->
 
-    <aside class="menu-lateral menu-medico">
+    <aside class="menu-lateral">
 
         <h3>Menú</h3>
 
+
+        <!-- INICIO -->
+
         <a href="/prueba/panelprincipal.html">
+
             <i class="fa-solid fa-house"></i>
+
             Inicio
+
         </a>
 
 
@@ -470,20 +476,29 @@ if (!$resultado) {
         <details class="menu-desplegable">
 
             <summary>
+
                 <i class="fa-solid fa-user-plus"></i>
+
                 Pacientes
+
             </summary>
 
             <div class="submenu">
 
                 <a href="/prueba/php/nuevo_paciente.php">
+
                     <i class="fa-solid fa-plus"></i>
+
                     Nuevo paciente
+
                 </a>
 
                 <a href="/prueba/php/ver_paciente.php">
+
                     <i class="fa-solid fa-list"></i>
+
                     Ver pacientes
+
                 </a>
 
             </div>
@@ -496,67 +511,101 @@ if (!$resultado) {
         <details class="menu-desplegable">
 
             <summary>
+
                 <i class="fa-solid fa-truck-medical"></i>
+
                 Ambulancias
+
             </summary>
 
             <div class="submenu">
 
                 <a href="/prueba/php/nuevo_traslado.php">
+
                     <i class="fa-solid fa-plus"></i>
-                    Nuevo traslado
+
+                    Nuevo registro
+
                 </a>
 
                 <a href="/prueba/php/ver_traslados.php">
-                    <i class="fa-solid fa-list"></i>
-                    Ver traslados
-                </a>
 
+                    <i class="fa-solid fa-list"></i>
+
+                    Ver registros
+
+                </a>
                 <a href="/prueba/php/Gestion_Ambulancia.php">
-                    <i class="fa-solid fa-ambulance"></i>
-                    Gestión de ambulancias
+                   <i class="fa-solid fa-cogs"></i>
+                    Gestión de Ambulancias
                 </a>
 
             </div>
 
         </details>
 
+             <!-- Documentación -->
 
-        <!-- DOCUMENTACIÓN -->
+       <details class="menu-desplegable">
 
-        <a href="/prueba/php/documentacion.php">
-            <i class="fa-solid fa-file-medical"></i>
-            Espacios de documentación
-        </a>
+            <summary>
 
-        <a href="/prueba/php/ver_documentacion.php"
-           aria-current="page">
+                <i class="fa-solid fa-file-alt"></i>
 
-            <i class="fa-solid fa-folder-open"></i>
-            Ver documentación
+                Documentación
 
-        </a>
+            </summary>
 
+            <div class="submenu">
+
+                <a href="/prueba/php/documentacion.php">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Nueva documentación
+
+                </a>
+
+                <a href="/prueba/php/ver_documentacion.php">
+
+                    <i class="fa-solid fa-list"></i>
+
+                    Ver documentación
+
+                </a>
+
+            </div>
+
+        </details>
 
         <!-- USUARIOS -->
 
-        <details class="menu-desplegable">
+       <details class="menu-desplegable">
 
             <summary>
+
                 <i class="fa-solid fa-user-plus"></i>
+
                 Usuarios
+
             </summary>
 
             <div class="submenu">
 
                 <a href="/prueba/php/panel_admin.php">
+
                     <i class="fa-solid fa-plus"></i>
-                    Solicitudes
+
+                   Solicitudes
+
                 </a>
 
                 <a href="/prueba/php/lista_usuarios.php">
+
                     <i class="fa-solid fa-list"></i>
-                    Lista de usuarios
+
+                    Lista de Usuarios
+
                 </a>
 
             </div>
@@ -566,24 +615,13 @@ if (!$resultado) {
 
         <!-- CERRAR SESIÓN -->
 
-        <form method="POST" class="form-salir">
+        <a href="/prueba/index.html">
 
-            <input type="hidden"
-                   name="token"
-                   value="<?php echo $token; ?>">
+            <i class="fa-solid fa-right-from-bracket"></i>
 
-            <button type="submit"
-                    name="cerrar_sesion"
-                    class="salir-medico">
+            Cerrar sesión
 
-                <i class="fa-solid fa-right-from-bracket"
-                   aria-hidden="true"></i>
-
-                Cerrar sesión
-
-            </button>
-
-        </form>
+        </a>
 
     </aside>
 
