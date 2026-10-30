@@ -881,11 +881,14 @@ try {
 
     <!-- MENÚ LATERAL -->
 
-    <aside class="menu-lateral menu-medico">
+     <aside class="menu-lateral">
 
         <h3>Menú</h3>
 
-        <a href="/prueba/panelprincipal.html">
+
+        <!-- INICIO -->
+
+        <a href="/prueba/panelprincipal.php">
 
             <i class="fa-solid fa-house"></i>
 
@@ -893,6 +896,8 @@ try {
 
         </a>
 
+
+        <!-- PACIENTES -->
 
         <details class="menu-desplegable">
 
@@ -927,6 +932,8 @@ try {
         </details>
 
 
+        <!-- AMBULANCIAS -->
+
         <details class="menu-desplegable">
 
             <summary>
@@ -947,11 +954,49 @@ try {
 
                 </a>
 
-                <a href="/prueba/php/registro_ambulancias.html">
+                <a href="/prueba/php/ver_traslados.php">
 
                     <i class="fa-solid fa-list"></i>
 
                     Ver registros
+
+                </a>
+                <a href="/prueba/php/Gestion_Ambulancia.php">
+                   <i class="fa-solid fa-cogs"></i>
+                    Gestión de Ambulancias
+                </a>
+
+            </div>
+
+        </details>
+
+             <!-- Documentación -->
+
+       <details class="menu-desplegable">
+
+            <summary>
+
+                <i class="fa-solid fa-file-alt"></i>
+
+                Documentación
+
+            </summary>
+
+            <div class="submenu">
+
+                <a href="/prueba/php/documentacion.php">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Nueva documentación
+
+                </a>
+
+                <a href="/prueba/php/ver_documentacion.php">
+
+                    <i class="fa-solid fa-list"></i>
+
+                    Ver documentación
 
                 </a>
 
@@ -959,8 +1004,9 @@ try {
 
         </details>
 
+        <!-- USUARIOS -->
 
-        <details class="menu-desplegable">
+       <details class="menu-desplegable">
 
             <summary>
 
@@ -976,7 +1022,7 @@ try {
 
                     <i class="fa-solid fa-plus"></i>
 
-                    Solicitudes
+                   Solicitudes
 
                 </a>
 
@@ -984,7 +1030,7 @@ try {
 
                     <i class="fa-solid fa-list"></i>
 
-                    Lista de usuarios
+                    Lista de Usuarios
 
                 </a>
 
@@ -993,23 +1039,14 @@ try {
         </details>
 
 
+        <!-- CERRAR SESIÓN -->
+
         <form method="POST" class="form-salir">
-
-            <input type="hidden"
-                   name="token"
-                   value="<?php echo $token; ?>">
-
-            <button type="submit"
-                    name="cerrar_sesion"
-                    class="salir-medico">
-
-                <i class="fa-solid fa-right-from-bracket"
-                   aria-hidden="true"></i>
-
+            <input type="hidden" name="token" value="<?php echo $token; ?>">
+            <button type="submit" name="cerrar_sesion" class="salir-medico">
+                <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
                 Cerrar sesión
-
             </button>
-
         </form>
 
     </aside>

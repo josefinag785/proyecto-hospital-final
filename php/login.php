@@ -1,84 +1,87 @@
 <?php
-
 session_start();
-
 mysqli_report(MYSQLI_REPORT_OFF);
-
-require_once 'conexion.php';
-
+require_once __DIR__ . '/conexion.php';
 $con->set_charset('utf8mb4');
-
+header('Cache-Control: no-store, private');
+header('Referrer-Policy: no-referrer');
 $mensaje = '';
 
+if (!isset($_SESSION['token_login'])) {
+    $_SESSION['token_login'] = bin2hex(random_bytes(32));
+}
+$token = $_SESSION['token_login'];
+
+if (isset($_GET['mensaje']) && $_GET['mensaje'] == 'cuenta_activada') {
+    $mensaje = 'Su cuenta fue activada. Ingrese con su cédula y la contraseña que eligió.';
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (!isset($_POST['token']) || !is_string($_POST['token'])
+        || !hash_equals($token, $_POST['token'])) {
+        http_response_code(403);
+        exit('Recargue la página y vuelva a intentarlo.');
+    }
 
     $username = '';
     $password = '';
-
     if (isset($_POST['username']) && is_string($_POST['username'])) {
         $username = trim($_POST['username']);
     }
-
     if (isset($_POST['password']) && is_string($_POST['password'])) {
         $password = $_POST['password'];
     }
 
     $cedula_sql = $con->real_escape_string($username);
-
     $sql = "SELECT ID_Usuario, Cedula, Contraseña, Rol, Estado
-            FROM Usuario
-            WHERE Cedula = '$cedula_sql'";
-
+            FROM Usuario WHERE Cedula = '$cedula_sql'";
     $resultado = $con->query($sql);
 
     if (!$resultado) {
-
         error_log($con->error);
-
         $mensaje = 'No se pudo iniciar sesión. Intente nuevamente.';
-
     } elseif ($resultado->num_rows == 0) {
-
         $mensaje = 'La cédula o la contraseña son incorrectas.';
-
     } else {
-
         $usuario = $resultado->fetch_assoc();
-
         if (!password_verify($password, $usuario['Contraseña'])) {
-
             $mensaje = 'La cédula o la contraseña son incorrectas.';
-
         } elseif ($usuario['Estado'] != 'Activo') {
-
             $mensaje = 'Su cuenta todavía no está activa.';
-
         } else {
+            // Recordar el QR si el paciente llegó desde ese enlace.
+            $codigo = '';
+            if (isset($_SESSION['codigo_documentacion'])
+                && is_string($_SESSION['codigo_documentacion'])
+                && preg_match('/^[a-f0-9]{64}$/', $_SESSION['codigo_documentacion'])) {
+                $codigo = $_SESSION['codigo_documentacion'];
+            }
 
-            // Guardar qué usuario acaba de ingresar.
+            $archivo_qr = filter_var($_SESSION['archivo_documentacion'] ?? 0, FILTER_VALIDATE_INT);
+
             $_SESSION = [];
-
             session_regenerate_id(true);
-
             $_SESSION['id_usuario'] = (int) $usuario['ID_Usuario'];
             $_SESSION['cedula'] = $usuario['Cedula'];
             $_SESSION['rol'] = $usuario['Rol'];
 
-            if ($usuario['Rol'] == 'Medico') {
-
-               header('Location: /prueba/php/MEDICO/inicio_medico.php');
-
+            if ($usuario['Rol'] == 'Conductor') {
+                header('Location: /prueba/php/CONDUCTOR/inicio_conductor.php');
+            } elseif ($usuario['Rol'] == 'Paciente' && $archivo_qr > 0) {
+                header('Location: /prueba/php/PACIENTE/documentacion_paciente.php?archivo=' . $archivo_qr);
+            } elseif ($codigo != '') {
+                header('Location: /prueba/php/PACIENTE/documentacion_paciente.php?codigo=' . urlencode($codigo));
+            } elseif ($usuario['Rol'] == 'Paciente') {
+                header('Location: /prueba/php/PACIENTE/documentacion_paciente.php');
+            } elseif ($usuario['Rol'] == 'Medico') {
+                header('Location: /prueba/php/MEDICO/inicio_medico.php');
             } else {
-
-                header('Location: /prueba/panelprincipal.html');
-
+                header('Location: /prueba/panelprincipal.php');
             }
-
             exit;
         }
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -145,23 +148,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <?php
             if ($mensaje != "") {
-                echo "<p>" . $mensaje . "</p>";
+                echo "<p>" . htmlspecialchars($mensaje, ENT_QUOTES, 'UTF-8') . "</p>";
             }
             ?>
 
             <form class="form-login" action="login.php" method="post">
 
+                <input type="hidden" name="token" value="<?php echo $token; ?>">
+
                 <label for="username">
 
                     <i class="fa-solid fa-user"></i>
 
-                    Usuario o correo electrónico
+                    Cédula
 
                 </label>
 
                 <input type="text"
                        id="username"
                        name="username"
+                       maxlength="20"
+                       autocomplete="username"
                        required>
 
                 <br><br>
@@ -177,6 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="password"
                        id="password"
                        name="password"
+                       autocomplete="current-password"
                        required>
 
                 <br><br>
@@ -192,8 +200,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </p>
 
                 <p>
-                    ¿No tiene una cuenta?
-                    <a href="/prueba/php/registrarse.php">Registrarse</a>
+                    ¿Es su primer ingreso como paciente?
+                    <a href="/prueba/php/PACIENTE/activar_cuenta.php">Activar mi cuenta</a>
+                </p>
+
+                <p>
+                    Personal del hospital:
+                    <a href="/prueba/php/registrarse.php">Solicitar acceso</a>
                 </p>
 
             </form>
@@ -217,3 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 </html>
 
+
+<?php
+$con->close();
+?>

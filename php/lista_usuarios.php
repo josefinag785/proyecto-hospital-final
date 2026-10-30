@@ -139,7 +139,7 @@ $resultado_desactivados = $con->query($sql_desactivados);
 
         <!-- INICIO -->
 
-        <a href="/prueba/panelprincipal.html">
+        <a href="/prueba/panelprincipal.php">
 
             <i class="fa-solid fa-house"></i>
 
@@ -292,13 +292,13 @@ $resultado_desactivados = $con->query($sql_desactivados);
 
         <!-- CERRAR SESIÓN -->
 
-        <a href="/prueba/index.html">
-
-            <i class="fa-solid fa-right-from-bracket"></i>
-
-            Cerrar sesión
-
-        </a>
+        <form method="POST" class="form-salir">
+            <input type="hidden" name="token" value="<?php echo $token; ?>">
+            <button type="submit" name="cerrar_sesion" class="salir-medico">
+                <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+                Cerrar sesión
+            </button>
+        </form>
 
     </aside>
 

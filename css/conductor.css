@@ -1,0 +1,159 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #F8FAFC;
+    color: #1F2937;
+}
+
+header {
+    background: #1E3A8A;
+    color: white;
+    padding: 18px;
+}
+
+.encabezado {
+    max-width: 600px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.encabezado img {
+    width: 48px;
+    height: auto;
+}
+
+.encabezado p {
+    margin: 0;
+    font-weight: 600;
+}
+
+main {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px 16px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 25px;
+    color: #1E3A8A;
+}
+
+h2 {
+    margin: 0 0 12px;
+    font-size: 19px;
+    color: #1E3A8A;
+}
+
+p {
+    overflow-wrap: anywhere;
+}
+
+.tarjeta {
+    margin: 18px 0;
+    padding: 20px;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    background: white;
+}
+
+.tarjeta p {
+    margin: 10px 0;
+}
+
+.campo {
+    margin: 18px 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+input, select {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px;
+    border: 1px solid #9CA3AF;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 16px;
+    background: white;
+    color: #1F2937;
+}
+
+.boton {
+    display: inline-block;
+    min-height: 46px;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 8px;
+    background: #2563EB;
+    color: white;
+    font: inherit;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+.boton:hover {
+    background: #1E3A8A;
+}
+
+.secundario {
+    background: #E5E7EB;
+    color: #1E3A8A;
+}
+
+.secundario:hover {
+    background: #D1D5DB;
+}
+
+.guardar {
+    width: 100%;
+}
+
+.aviso {
+    padding: 14px;
+    border-radius: 8px;
+    background: #DBEAFE;
+    color: #1E3A8A;
+}
+
+.error {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+a {
+    color: #1E3A8A;
+}
+.mapa-recorrido {
+    width: 100%;
+    height: 360px;
+    margin: 14px 0;
+    border: 1px solid #9CA3AF;
+    border-radius: 8px;
+}
+
+.acciones-recorrido {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.acciones-recorrido .boton {
+    flex: 1;
+}
+
+.boton:disabled {
+    opacity: 0.5;
+    cursor: default;
+}

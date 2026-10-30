@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+date_default_timezone_set('America/Montevideo');
 
 mysqli_report(MYSQLI_REPORT_OFF);
 
@@ -11,17 +12,14 @@ $con->set_charset('utf8mb4');
 
 // COMPROBAR QUE INGRESÓ UN ADMINISTRADOR ACTIVO
 
-$id_usuario = filter_var(
-    $_SESSION['id_usuario'] ?? null,
-    FILTER_VALIDATE_INT
-);
+$id_usuario = filter_var($_SESSION['id_usuario'] ?? null, FILTER_VALIDATE_INT);
 
 if (!$id_usuario || $id_usuario < 1) {
     header('Location: /prueba/php/login.php');
     exit;
 }
 
-$sql = "SELECT ID_Usuario
+$sql = "SELECT ID_Usuario, Cedula
         FROM Usuario
         WHERE ID_Usuario = $id_usuario
           AND Rol = 'Administrador'
@@ -41,6 +39,7 @@ if ($resultado_usuario->num_rows == 0) {
 }
 
 header('Cache-Control: no-store, private');
+header('Referrer-Policy: no-referrer');
 
 
 // PREPARAR EL CIERRE DE SESIÓN
@@ -51,23 +50,15 @@ if (!isset($_SESSION['token_ver_documentacion_admin'])) {
 
 $token = $_SESSION['token_ver_documentacion_admin'];
 
-
-// CERRAR SESIÓN
-
 if (isset($_POST['cerrar_sesion'])) {
-
     $token_enviado = $_POST['token'] ?? '';
 
-    if (
-        !is_string($token_enviado)
-        || !hash_equals($token, $token_enviado)
-    ) {
+    if (!is_string($token_enviado) || !hash_equals($token, $token_enviado)) {
         http_response_code(403);
         exit('Recargue la página y vuelva a intentarlo.');
     }
 
     $_SESSION = [];
-
     session_destroy();
 
     header('Location: /prueba/php/login.php');
@@ -75,17 +66,13 @@ if (isset($_POST['cerrar_sesion'])) {
 }
 
 
+// FILTRAR UN ESPACIO SOLO SI SE ABRIÓ DESDE SU BOTÓN
 // AL ENTRAR DIRECTAMENTE SE MUESTRAN TODOS LOS DOCUMENTOS
-// SI SE RECIBE UN ESPACIO, SE FILTRA POR ESE ESPACIO
 
 $id_documento = 0;
 
 if (isset($_GET['documento'])) {
-
-    $id_documento = filter_var(
-        $_GET['documento'],
-        FILTER_VALIDATE_INT
-    );
+    $id_documento = filter_var($_GET['documento'], FILTER_VALIDATE_INT);
 
     if (!$id_documento || $id_documento < 1) {
         http_response_code(404);
@@ -97,11 +84,7 @@ if (isset($_GET['documento'])) {
 // ABRIR UN PDF
 
 if (isset($_GET['archivo'])) {
-
-    $id_archivo = filter_var(
-        $_GET['archivo'],
-        FILTER_VALIDATE_INT
-    );
+    $id_archivo = filter_var($_GET['archivo'], FILTER_VALIDATE_INT);
 
     if (!$id_archivo || $id_archivo < 1) {
         http_response_code(404);
@@ -139,19 +122,11 @@ if (isset($_GET['archivo'])) {
     $pdf = $resultado_archivo->fetch_assoc();
 
     header('Content-Type: application/pdf');
-
-    header(
-        'Content-Disposition: inline; filename="documento_'
-        . $id_archivo
-        . '.pdf"'
-    );
-
+    header('Content-Disposition: inline; filename="documento_' . $id_archivo . '.pdf"');
     header('Content-Length: ' . strlen($pdf['Archivo']));
-
     header('X-Content-Type-Options: nosniff');
 
     echo $pdf['Archivo'];
-
     exit;
 }
 
@@ -167,20 +142,53 @@ if ($id_documento > 0) {
 $archivo_eliminar = null;
 
 $aviso = $_SESSION['aviso_documentacion_admin'] ?? '';
-
 unset($_SESSION['aviso_documentacion_admin']);
 
-if (
-    isset($_POST['eliminar'])
-    || isset($_POST['confirmar_eliminacion'])
-) {
+// PUBLICAR UN DOCUMENTO PENDIENTE
+
+if (isset($_POST['publicar'])) {
+    $token_enviado = $_POST['token'] ?? '';
+    if (!is_string($token_enviado) || !hash_equals($token, $token_enviado)) {
+        http_response_code(403);
+        exit('Recargue la página y vuelva a intentarlo.');
+    }
+
+    $id_archivo = filter_var($_POST['publicar'], FILTER_VALIDATE_INT);
+    if (!$id_archivo || $id_archivo < 1) {
+        http_response_code(400);
+        exit('Archivo no válido.');
+    }
+
+    $sql = "UPDATE Archivo_Documento
+            INNER JOIN Documento ON Archivo_Documento.ID_Documento = Documento.ID_Documento
+            INNER JOIN Paciente ON Documento.ID_Paciente = Paciente.ID_Paciente
+            SET Archivo_Documento.Publicado = 1
+            WHERE Archivo_Documento.ID_Archivo = $id_archivo
+              AND Archivo_Documento.Publicado = 0
+              AND Archivo_Documento.Archivo IS NOT NULL
+              AND Paciente.Estado = 'Activo'";
+    if ($id_documento > 0) {
+        $sql .= " AND Documento.ID_Documento = $id_documento";
+    }
+
+    if (!$con->query($sql)) {
+        error_log($con->error);
+        http_response_code(500);
+        exit('No se pudo publicar el documento. Intente nuevamente.');
+    }
+
+    $_SESSION['aviso_documentacion_admin'] = $con->affected_rows == 1
+        ? 'Documento publicado. Ya está disponible para el paciente.'
+        : 'El documento ya está publicado o no está disponible.';
+    header('Location: ' . $url_documentacion . '#documentos', true, 303);
+    exit;
+}
+
+if (isset($_POST['eliminar']) || isset($_POST['confirmar_eliminacion'])) {
 
     $token_enviado = $_POST['token'] ?? '';
 
-    if (
-        !is_string($token_enviado)
-        || !hash_equals($token, $token_enviado)
-    ) {
+    if (!is_string($token_enviado) || !hash_equals($token, $token_enviado)) {
         http_response_code(403);
         exit('Recargue la página y vuelva a intentarlo.');
     }
@@ -194,8 +202,6 @@ if (
         http_response_code(400);
         exit('Archivo no válido.');
     }
-
-    // BUSCAR EL ARCHIVO QUE SE QUIERE ELIMINAR
 
     $sql = "SELECT Archivo_Documento.ID_Archivo,
                    Archivo_Documento.ID_Documento,
@@ -231,32 +237,26 @@ if (
 
     $archivo_eliminar = $resultado_eliminar->fetch_assoc();
 
-    // ELIMINAR DESPUÉS DE CONFIRMAR
-
     if (isset($_POST['confirmar_eliminacion'])) {
 
         $id_espacio = (int) $archivo_eliminar['ID_Documento'];
-
         $correcto = $con->begin_transaction();
 
         // BLOQUEAR EL ESPACIO MIENTRAS SE ACTUALIZA
 
         if ($correcto) {
-
             $sql = "SELECT ID_Documento
                     FROM Documento
                     WHERE ID_Documento = $id_espacio
                     FOR UPDATE";
 
             $bloqueo = $con->query($sql);
-
             $correcto = $bloqueo && $bloqueo->num_rows > 0;
         }
 
-        // BORRAR EL ARCHIVO ELEGIDO
+        // BORRAR SOLAMENTE EL ARCHIVO ELEGIDO
 
         if ($correcto) {
-
             $consulta_eliminar = $con->prepare(
                 'DELETE FROM Archivo_Documento
                  WHERE ID_Archivo = ?
@@ -267,13 +267,7 @@ if (
             $correcto = false;
 
             if ($consulta_eliminar) {
-
-                $consulta_eliminar->bind_param(
-                    'ii',
-                    $id_archivo,
-                    $id_espacio
-                );
-
+                $consulta_eliminar->bind_param('ii', $id_archivo, $id_espacio);
                 $correcto = $consulta_eliminar->execute()
                     && $consulta_eliminar->affected_rows == 1;
             }
@@ -282,7 +276,6 @@ if (
         // ACTUALIZAR EL ESTADO SEGÚN LOS PDF QUE QUEDEN
 
         if ($correcto) {
-
             $sql = "UPDATE Documento
                     SET Estado = CASE
                         WHEN EXISTS (
@@ -309,8 +302,7 @@ if (
             exit('No se pudo eliminar el archivo. Intente nuevamente.');
         }
 
-        $_SESSION['aviso_documentacion_admin'] =
-            'Documentación eliminada correctamente.';
+        $_SESSION['aviso_documentacion_admin'] = 'Documentación eliminada correctamente.';
 
         header('Location: ' . $url_documentacion, true, 303);
         exit;
@@ -325,7 +317,6 @@ $nombre = '';
 $mensaje = '';
 
 if (isset($_POST['buscar'])) {
-
     if (is_string($_POST['cedula'] ?? null)) {
         $cedula = trim($_POST['cedula']);
     }
@@ -343,6 +334,7 @@ $sql = "SELECT Archivo_Documento.ID_Archivo,
                Archivo_Documento.Titulo,
                Archivo_Documento.Descripcion,
                Archivo_Documento.Fecha_Carga,
+               Archivo_Documento.Publicado,
                Persona.Cedula,
                Persona.Nombre,
                Persona.Apellido,
@@ -367,31 +359,24 @@ if ($id_documento > 0) {
     $sql .= " AND Documento.ID_Documento = $id_documento";
 }
 
-$sql .= " ORDER BY Archivo_Documento.Fecha_Carga DESC,
+$sql .= " ORDER BY Archivo_Documento.Publicado ASC,
+                   Archivo_Documento.Fecha_Carga DESC,
                    Archivo_Documento.ID_Archivo DESC";
 
 $buscar_cedula = '%' . $cedula . '%';
-
 $buscar_nombre = '%' . $nombre . '%';
-
 $resultado = false;
 
 $consulta = $con->prepare($sql);
 
 if ($consulta) {
-
-    $consulta->bind_param(
-        'ss',
-        $buscar_cedula,
-        $buscar_nombre
-    );
+    $consulta->bind_param('ss', $buscar_cedula, $buscar_nombre);
 
     if ($consulta->execute()) {
         $resultado = $consulta->get_result();
     } else {
         error_log($consulta->error);
     }
-
 } else {
     error_log($con->error);
 }
@@ -406,63 +391,41 @@ if (!$resultado) {
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ver documentación | Hospital de Clínicas</title>
-
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-
-    <link rel="preconnect"
-          href="https://fonts.googleapis.com">
-
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
           rel="stylesheet">
-
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
     <link rel="stylesheet" href="/prueba/css/style.css">
-
 </head>
 
 <body class="pagina-documentacion">
 
 <header>
-
     <div class="encabezado">
-
         <img src="/prueba/img/LOGO PROYECTO DHC.png"
-             alt="Logo del hospital"
+             alt="Logo"
              class="logo">
-
-        <h1>HOSPITAL DE CLÍNICAS</h1>
-
+        <h1>HOSPITAL DE CLINICA</h1>
     </div>
-
 </header>
-
-
 <div class="perfil-contenedor">
 
-    <!-- MENÚ LATERAL DEL ADMINISTRADOR -->
-
-    <aside class="menu-lateral">
+    <!-- MENÚ LATERAL -->
+     <aside class="menu-lateral">
 
         <h3>Menú</h3>
 
 
         <!-- INICIO -->
 
-        <a href="/prueba/panelprincipal.html">
+        <a href="/prueba/panelprincipal.php">
 
             <i class="fa-solid fa-house"></i>
 
@@ -615,189 +578,104 @@ if (!$resultado) {
 
         <!-- CERRAR SESIÓN -->
 
-        <a href="/prueba/index.html">
-
-            <i class="fa-solid fa-right-from-bracket"></i>
-
-            Cerrar sesión
-
-        </a>
+        <form method="POST" class="form-salir">
+            <input type="hidden" name="token" value="<?php echo $token; ?>">
+            <button type="submit" name="cerrar_sesion" class="salir-medico">
+                <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+                Cerrar sesión
+            </button>
+        </form>
 
     </aside>
 
-
     <!-- CONTENIDO -->
-
     <main class="contenido pagina-medico">
 
         <h2 class="titulo-panel">Ver documentación</h2>
 
         <p class="subtitulo-panel">
-            Consulte la documentación cargada para todos los pacientes.
+            Consulte y publique la documentación de los pacientes registrados.
         </p>
 
         <div class="lista-documentacion">
 
-            <!-- MENSAJE DESPUÉS DE ELIMINAR -->
-
             <?php if ($aviso != '') { ?>
-
                 <p class="aviso-medico" role="status">
                     <?php echo htmlspecialchars($aviso, ENT_QUOTES, 'UTF-8'); ?>
                 </p>
-
             <?php } ?>
 
-
             <!-- CONFIRMAR LA ELIMINACIÓN -->
-
             <?php if ($archivo_eliminar !== null) { ?>
-
                 <div class="tarjeta" id="confirmar-eliminacion">
-
                     <h3>Eliminar documentación</h3>
 
                     <p>
                         <strong>Paciente:</strong>
-
-                        <?php
-                        echo htmlspecialchars(
-                            $archivo_eliminar['Nombre']
-                            . ' '
-                            . $archivo_eliminar['Apellido'],
-                            ENT_QUOTES,
-                            'UTF-8'
-                        );
-                        ?>
+                        <?php echo htmlspecialchars($archivo_eliminar['Nombre'] . ' ' . $archivo_eliminar['Apellido'], ENT_QUOTES, 'UTF-8'); ?>
                     </p>
 
                     <p>
                         <strong>Documento:</strong>
-
-                        <?php
-                        echo htmlspecialchars(
-                            $archivo_eliminar['Titulo'],
-                            ENT_QUOTES,
-                            'UTF-8'
-                        );
-                        ?>
+                        <?php echo htmlspecialchars($archivo_eliminar['Titulo'], ENT_QUOTES, 'UTF-8'); ?>
                     </p>
 
-                    <p>
-                        El archivo se eliminará definitivamente.
-                        ¿Desea continuar?
-                    </p>
+                    <p>El archivo se eliminará definitivamente. ¿Desea continuar?</p>
 
-                    <form
-                        action="<?php echo htmlspecialchars($url_documentacion, ENT_QUOTES, 'UTF-8'); ?>"
-                        method="POST"
-                        class="acciones-pacientes">
+                    <form action="<?php echo htmlspecialchars($url_documentacion, ENT_QUOTES, 'UTF-8'); ?>"
+                          method="POST" class="acciones-pacientes">
+                        <input type="hidden" name="token" value="<?php echo $token; ?>">
 
-                        <input
-                            type="hidden"
-                            name="token"
-                            value="<?php echo $token; ?>">
-
-                        <button
-                            type="submit"
-                            name="confirmar_eliminacion"
-                            value="<?php echo (int) $archivo_eliminar['ID_Archivo']; ?>"
-                            class="eliminar">
-
+                        <button type="submit" name="confirmar_eliminacion"
+                                value="<?php echo (int) $archivo_eliminar['ID_Archivo']; ?>"
+                                class="eliminar">
                             <i class="fa-solid fa-trash" aria-hidden="true"></i>
-
                             Sí, eliminar
-
                         </button>
 
-                        <a
-                            href="<?php echo htmlspecialchars($url_documentacion, ENT_QUOTES, 'UTF-8'); ?>"
-                            class="ver-pdf-medico">
-
-                            Cancelar
-
-                        </a>
-
+                        <a href="<?php echo htmlspecialchars($url_documentacion, ENT_QUOTES, 'UTF-8'); ?>"
+                           class="ver-pdf-medico">Cancelar</a>
                     </form>
-
                 </div>
-
             <?php } ?>
 
-
             <!-- BUSCADOR -->
-
             <div class="tarjeta">
-
                 <h3>Buscar documentación de un paciente</h3>
 
                 <form action="ver_documentacion.php" method="POST">
-
                     <div class="fila-pacientes">
-
                         <div class="campo-pacientes">
-
                             <label for="cedula">Cédula</label>
-
-                            <input
-                                type="text"
-                                id="cedula"
-                                name="cedula"
-                                placeholder="Ej: 4.123.456-7"
-                                value="<?php echo htmlspecialchars($cedula, ENT_QUOTES, 'UTF-8'); ?>">
-
+                            <input type="text" id="cedula" name="cedula"
+                                   placeholder="Ej: 4.123.456-7"
+                                   value="<?php echo htmlspecialchars($cedula, ENT_QUOTES, 'UTF-8'); ?>">
                         </div>
 
                         <div class="campo-pacientes">
-
                             <label for="nombre">Nombre o apellido</label>
-
-                            <input
-                                type="text"
-                                id="nombre"
-                                name="nombre"
-                                placeholder="Ej: Juan Pérez"
-                                value="<?php echo htmlspecialchars($nombre, ENT_QUOTES, 'UTF-8'); ?>">
-
+                            <input type="text" id="nombre" name="nombre"
+                                   placeholder="Ej: Juan Pérez"
+                                   value="<?php echo htmlspecialchars($nombre, ENT_QUOTES, 'UTF-8'); ?>">
                         </div>
-
                     </div>
 
                     <div class="botones-busqueda-documentacion">
-
-                        <button
-                            type="submit"
-                            name="buscar"
-                            class="boton-agendar">
-
+                        <button type="submit" name="buscar" class="boton-agendar">
                             <i class="fa-solid fa-magnifying-glass"></i>
-
                             Buscar
-
                         </button>
 
-                        <button
-                            type="submit"
-                            name="mostrar_todos"
-                            class="boton-agendar">
-
+                        <button type="submit" name="mostrar_todos" class="boton-agendar">
                             <i class="fa-solid fa-list"></i>
-
                             Mostrar todos
-
                         </button>
-
                     </div>
-
                 </form>
-
             </div>
 
-
             <!-- LISTA DE DOCUMENTOS -->
-
-            <div class="tarjeta">
-
+            <div class="tarjeta" id="documentos">
                 <h3>Documentación cargada</h3>
 
                 <?php if ($mensaje != '') { ?>
@@ -808,203 +686,116 @@ if (!$resultado) {
 
                 <?php } elseif ($resultado->num_rows == 0) { ?>
 
-                    <p>
-                        No hay documentos cargados para mostrar con esta selección.
-                    </p>
+                    <p>No hay documentos cargados para mostrar con esta selección.</p>
 
                 <?php } else { ?>
 
-                    <p>
-                        Documentos encontrados:
-                        <?php echo $resultado->num_rows; ?>
-                    </p>
+                    <p>Documentos encontrados: <?php echo $resultado->num_rows; ?></p>
 
                     <div class="tabla-scroll">
-
                         <table class="big-table">
-
                             <thead>
-
                                 <tr>
                                     <th scope="col">Paciente</th>
                                     <th scope="col">Cédula</th>
                                     <th scope="col">Documento</th>
                                     <th scope="col">Médico responsable</th>
                                     <th scope="col">Fecha de carga</th>
+                                    <th scope="col">Estado</th>
                                     <th scope="col">Acciones</th>
                                 </tr>
-
                             </thead>
 
                             <tbody>
-
-                                <?php
-                                while ($archivo = $resultado->fetch_assoc()) {
-                                ?>
-
+                                <?php while ($archivo = $resultado->fetch_assoc()) { ?>
                                     <tr>
-
                                         <td>
-                                            <?php
-                                            echo htmlspecialchars(
-                                                $archivo['Nombre'] . ' ' . $archivo['Apellido'],
-                                                ENT_QUOTES,
-                                                'UTF-8'
-                                            );
-                                            ?>
+                                            <?php echo htmlspecialchars($archivo['Nombre'] . ' ' . $archivo['Apellido'], ENT_QUOTES, 'UTF-8'); ?>
                                         </td>
 
                                         <td>
-                                            <?php
-                                            echo htmlspecialchars(
-                                                $archivo['Cedula'],
-                                                ENT_QUOTES,
-                                                'UTF-8'
-                                            );
-                                            ?>
+                                            <?php echo htmlspecialchars($archivo['Cedula'], ENT_QUOTES, 'UTF-8'); ?>
                                         </td>
 
                                         <td>
-
                                             <strong>
-                                                <?php
-                                                echo htmlspecialchars(
-                                                    $archivo['Titulo'],
-                                                    ENT_QUOTES,
-                                                    'UTF-8'
-                                                );
-                                                ?>
+                                                <?php echo htmlspecialchars($archivo['Titulo'], ENT_QUOTES, 'UTF-8'); ?>
                                             </strong>
 
                                             <?php if ($archivo['Descripcion'] != '') { ?>
-
                                                 <p>
-                                                    <?php
-                                                    echo htmlspecialchars(
-                                                        $archivo['Descripcion'],
-                                                        ENT_QUOTES,
-                                                        'UTF-8'
-                                                    );
-                                                    ?>
+                                                    <?php echo htmlspecialchars($archivo['Descripcion'], ENT_QUOTES, 'UTF-8'); ?>
                                                 </p>
-
                                             <?php } ?>
-
                                         </td>
 
                                         <td>
-
                                             <?php
-
                                             $nombre_medico = trim(
-                                                ($archivo['Nombre_Medico'] ?? '')
-                                                . ' '
+                                                ($archivo['Nombre_Medico'] ?? '') . ' '
                                                 . ($archivo['Apellido_Medico'] ?? '')
                                             );
 
                                             if ($nombre_medico == '') {
                                                 echo 'Sin médico asignado';
                                             } else {
-                                                echo htmlspecialchars(
-                                                    $nombre_medico,
-                                                    ENT_QUOTES,
-                                                    'UTF-8'
-                                                );
+                                                echo htmlspecialchars($nombre_medico, ENT_QUOTES, 'UTF-8');
                                             }
-
-                                            ?>
-
-                                        </td>
-
-                                        <td>
-                                            <?php
-                                            echo date(
-                                                'd/m/Y H:i',
-                                                strtotime($archivo['Fecha_Carga'])
-                                            );
                                             ?>
                                         </td>
 
-                                        <!-- VER Y ELIMINAR -->
+                                        <td>
+                                            <?php echo date('d/m/Y H:i', strtotime($archivo['Fecha_Carga'])); ?>
+                                        </td>
+
+                                        <td><?php echo (int) $archivo['Publicado'] == 1 ? 'Publicado' : 'Pendiente de publicación'; ?></td>
 
                                         <td>
-
-                                            <a
-                                                href="ver_documentacion.php?documento=<?php echo (int) $archivo['ID_Documento']; ?>&amp;archivo=<?php echo (int) $archivo['ID_Archivo']; ?>"
-                                                class="ver-pdf-medico"
-                                                target="_blank"
-                                                rel="noopener">
-
-                                                <i class="fa-solid fa-file-pdf"
-                                                   aria-hidden="true"></i>
-
+                                            <a href="ver_documentacion.php?documento=<?php echo (int) $archivo['ID_Documento']; ?>&amp;archivo=<?php echo (int) $archivo['ID_Archivo']; ?>"
+                                               class="ver-pdf-medico"
+                                               target="_blank" rel="noopener">
+                                                <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
                                                 Ver PDF
-
                                             </a>
 
-                                            <form
-                                                action="<?php echo htmlspecialchars($url_documentacion, ENT_QUOTES, 'UTF-8'); ?>#confirmar-eliminacion"
-                                                method="POST"
-                                                class="acciones-pacientes">
+                                            <form action="<?php echo htmlspecialchars($url_documentacion, ENT_QUOTES, 'UTF-8'); ?>#confirmar-eliminacion"
+                                                  method="POST" class="acciones-pacientes">
+                                                <input type="hidden" name="token" value="<?php echo $token; ?>">
 
-                                                <input
-                                                    type="hidden"
-                                                    name="token"
-                                                    value="<?php echo $token; ?>">
+                                                <?php if ((int) $archivo['Publicado'] == 0) { ?>
+                                                    <button type="submit" name="publicar"
+                                                            value="<?php echo (int) $archivo['ID_Archivo']; ?>" class="boton-agendar">Publicar</button>
+                                                <?php } ?>
 
-                                                <button
-                                                    type="submit"
-                                                    name="eliminar"
-                                                    value="<?php echo (int) $archivo['ID_Archivo']; ?>"
-                                                    class="eliminar"
-                                                    title="Eliminar documentación">
-
-                                                    <i class="fa-solid fa-trash"
-                                                       aria-hidden="true"></i>
-
+                                                <button type="submit" name="eliminar"
+                                                        value="<?php echo (int) $archivo['ID_Archivo']; ?>"
+                                                        class="eliminar" title="Eliminar documentación">
+                                                    <i class="fa-solid fa-trash" aria-hidden="true"></i>
                                                     Eliminar
-
                                                 </button>
-
                                             </form>
-
                                         </td>
-
                                     </tr>
-
                                 <?php } ?>
-
                             </tbody>
-
                         </table>
-
                     </div>
 
                 <?php } ?>
-
             </div>
 
         </div>
-
     </main>
 
 </div>
 
-
 <footer>
-
-    <p>
-        &copy; 2026 Hospital de Clínicas.
-        Todos los derechos reservados a DHC.
-    </p>
-
+    <p>&copy; 2026 Hospital de Clínicas. Todos los derechos reservados a DHC.</p>
 </footer>
 
 </body>
 </html>
 
 <?php
-
 $con->close();
-
 ?>

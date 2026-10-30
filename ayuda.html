@@ -3,147 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOSPITAL DE CLINICA</title>
-  <!-- Normalize CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <title>Ayuda | Hospital de Clínicas</title>
 
-<!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<!-- Font Awesome (iconos) -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <header>
-        
-    <div class="encabezado">
-        <img src="/prueba/img/LOGO PROYECTO DHC.png" alt="Logo" class="logo">
-        <h1>HOSPITAL DE CLINICA</h1>
-    </div>
-       <div class="topnav">
+        <div class="encabezado">
+            <img src="/prueba/img/LOGO PROYECTO DHC.png" alt="Logo del hospital" class="logo">
+            <h1>HOSPITAL DE CLÍNICAS</h1>
+        </div>
 
-    <div class="nav-links">
-        <a href="index.html">Inicio</a>
-        <a href="sobre_la_pagina.html">Sobre la Pagina</a>
-        <a href="contacto.html">Contacto</a>
-        <a class="active" href="ayuda.html">Ayuda</a>
-    </div>
+        <div class="topnav">
+            <div class="nav-links">
+                <a href="index.html">Inicio</a>
+                <a href="sobre_la_pagina.html">Sobre la página</a>
+                <a href="contacto.html">Contacto</a>
+                <a class="active" href="ayuda.html">Ayuda</a>
+            </div>
 
-    <div class="search-container">
+            <div class="search-container">
+                <a href="php/registrarse.php" class="boton-nav">Solicitar acceso</a>
+                <a href="php/login.php" class="boton-nav">Iniciar sesión</a>
+            </div>
+        </div>
+    </header>
 
-        <form action="/action_page.php">
-            <input type="text" placeholder="Buscar..." name="search">
-            <button type="submit">
-                <i class="fa fa-search"></i>
-            </button>
-        </form>
+    <main>
+        <section class="ayuda">
+            <h2>Centro de ayuda</h2>
+            <p class="introduccion">Consulte cómo usar la plataforma.</p>
 
-        <button class="button button2">REGISTRATE</button>
-        <button class="button button2">INICIA SESIÓN</button>
+            <details>
+                <summary>
+                    <i class="fa-solid fa-circle-user" aria-hidden="true"></i>
+                    ¿Cómo accedo si soy paciente?
+                </summary>
+                <p>
+                    El personal del hospital registra su cuenta. Si le entregaron
+                    un código de activación, ingrese a
+                    <a href="php/PACIENTE/activar_cuenta.php">Activar cuenta</a>
+                    para crear su contraseña. Si ya tiene una cuenta activa,
+                    puede iniciar sesión con sus datos habituales.
+                </p>
+            </details>
 
-    </div>
+            <details>
+                <summary>
+                    <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
+                    ¿Cómo solicito acceso como funcionario?
+                </summary>
+                <p>
+                    Complete <a href="php/registrarse.php">Solicitar acceso</a>
+                    con la cédula y el correo registrados en el hospital.
+                    Si ya tiene cuenta de paciente, marque la casilla
+                    correspondiente y use su contraseña actual.
+                    Un administrador revisará la solicitud.
+                </p>
+            </details>
 
-</div>
-<section class="ayuda">
+            <details>
+                <summary>
+                    <i class="fa-solid fa-key" aria-hidden="true"></i>
+                    ¿Cómo inicio sesión?
+                </summary>
+                <p>
+                    Abra <a href="php/login.php">Iniciar sesión</a> e ingrese
+                    su cédula y contraseña. El sistema abrirá la página
+                    correspondiente a su rol.
+                </p>
+            </details>
 
-    <h2>Centro de Ayuda</h2>
+            <details>
+                <summary>
+                    <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+                    ¿Cómo veo mis documentos?
+                </summary>
+                <p>
+                    Al iniciar sesión como paciente, encontrará sus documentos
+                    disponibles. Seleccione el que quiera consultar para
+                    abrir el PDF.
+                </p>
+            </details>
 
-    <p class="introduccion">
-        Consulte las preguntas frecuentes sobre el funcionamiento de la plataforma.
-    </p>
+            <details>
+                <summary>
+                    <i class="fa-solid fa-qrcode" aria-hidden="true"></i>
+                    ¿Cómo uso el código QR?
+                </summary>
+                <p>
+                    Escanee el QR del documento con la cámara de su celular
+                    y abra el enlace. Si el sistema se lo solicita, ingrese
+                    con su cédula y contraseña para consultar su documento.
+                </p>
+            </details>
 
-    <details>
-    <summary>
-        <i class="fa-solid fa-circle-user"></i>
-        ¿Cómo creo una cuenta?
-    </summary>
+            <div class="contacto-ayuda">
+                <h3>¿Necesita más ayuda?</h3>
+                <p>
+                    Si olvidó su contraseña o tiene problemas con su cuenta,
+                    consulte al personal administrativo del hospital.
+                </p>
+                <a href="contacto.html" class="boton-info">Contacto</a>
+            </div>
+        </section>
+    </main>
 
-    <p>
-        Para crear una cuenta, seleccione la opción <strong>"Registrarse"</strong>
-        en la página principal y complete los datos solicitados.
-    </p>
-</details>
-
-    <details>
-        <summary>
-            <i class="fa-solid fa-key"></i> 
-            ¿Cómo inicio sesión?
-        </summary>
-        <p>
-            Ingrese su usuario y contraseña en la sección
-            <strong>"Iniciar sesión"</strong>.
-            Si olvidó su contraseña, utilice la opción
-            <strong>"Recuperar contraseña"</strong>.
-        </p>
-    </details>
-
-    <details>
-        <summary>
-            <i class="fa-solid fa-file"></i> 
-            ¿Dónde puedo ver mis documentos?
-        </summary>
-        <p>
-            Una vez iniciada la sesión, ingrese a
-            <strong>"Mis documentos"</strong>.
-            Allí encontrará recetas, resultados de estudios y demás
-            documentación digital.
-        </p>
-    </details>
-
-    <details>
-        <summary>
-            <i class="fa-solid fa-hospital"></i> 
-             ¿Quién puede acceder a la plataforma?
-            </summary>
-        <p>
-            La plataforma puede ser utilizada por pacientes y funcionarios
-            autorizados del Hospital de Clínicas, cada uno con los permisos
-            correspondientes a su perfil.
-        </p>
-    </details>
-
-    <details>
-        <summary>
-            <i class="fa-solid fa-shield-halved"></i> 
-            ¿Mis datos están protegidos?
-        </summary>
-        <p>
-            Sí. Toda la información es tratada de forma confidencial y solo
-            puede ser consultada por usuarios autorizados.
-        </p>
-    </details>
-
-    <div class="contacto-ayuda">
-
-        <h3>¿Necesita más ayuda?</h3>
-
-        <p>
-            Si no encontró la respuesta que buscaba, comuníquese con nuestro
-            equipo de soporte.
-        </p>
-
-        <p><strong>📧 Correo:</strong> soporte@dhc.edu.uy</p>
-
-        <p><strong>📞 Teléfono:</strong> (+598) 4722 0000</p>
-
-        <p><strong>🕒 Horario:</strong> Lunes a Viernes de 08:00 a 18:00 hs.</p>
-
-     <p><strong>    Direccion:</strong> Avenida Italia 2870, esquina General Las Heras </p>
-    </div>
-    
-    </div>
-
-</section>
-<footer>
-
-    <p>&copy; 2026 Hospital de Clínica. Todos los derechos reservados a DHC.</p>
-
-</footer>
-
+    <footer>
+        <p>&copy; 2026 Hospital de Clínicas. Todos los derechos reservados a DHC.</p>
+    </footer>
 </body>
-
 </html>
